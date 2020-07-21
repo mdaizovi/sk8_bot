@@ -1,0 +1,16 @@
+# File Types
+##################
+*.pyc
+.DS_Store
+.session
+
+# Specific files #
+#################
+db.sqlite
+db.sqlite3
+.idea/
+.env
+.env.pytest
+.env.backup
+.session
+/venv
