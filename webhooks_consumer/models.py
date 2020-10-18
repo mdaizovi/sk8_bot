@@ -26,6 +26,19 @@ class TelegramChannel(models.Model):
         return "{}: {}".format(self.__class__.__name__, self.name if self.name else self.channel_id)        
         
         
+    # ---------------------------------------------------------------------------
+    def save(self, *args, **kwargs):
+        # IMPORTANT: channel IDs are always negative and 13 characters long.
+        if self.channel_id[-1] != "-":
+            self.channel_id = "-" + self.channel_id
+        if len(self.channel_id) < 14:
+            fragment = self.channel_id[1:]
+            current_len = len(fragment)
+            difference = 13 - len(fragment)
+            new = "".join(["0" for s in range(difference)])
+            self.channel_id = "-" + new + fragment
+        super().save()
+        
 class Bot(models.Model):
     TELEGRAM_URL = "https://api.telegram.org/bot"
     BOT_TOKEN = settings.TELEGRAM_BOT_TOKEN
@@ -44,12 +57,6 @@ class Bot(models.Model):
     # ---------------------------------------------------------------------------
     def __str__(self):
         return "{}: {}".format(self.__class__.__name__, self.name)
-
-    # ---------------------------------------------------------------------------
-    def save(self, *args, **kwargs):
-        # IMPORTANT: channel IDs are always negative and 13 characters long.
-        # TODO: write clean that adds 0s and makes negative if need be.
-        super().save()
 
     def _build_url(self, api_action):
         return "{}{}/{}".format(self.TELEGRAM_URL, self.BOT_TOKEN, api_action)
