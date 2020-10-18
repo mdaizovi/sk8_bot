@@ -22,7 +22,7 @@ class TelegramBotView(View):
 
     def post(self, request, *args, **kwargs):
         request_json = json.loads(request.body.decode("utf-8"))
-        #print(json.dumps(request_json, indent=4, sort_keys=True))
+        print(json.dumps(request_json, indent=4, sort_keys=True))
         if "message" not in request_json:
             return JsonResponse({"ok": "no message to process"})
 
