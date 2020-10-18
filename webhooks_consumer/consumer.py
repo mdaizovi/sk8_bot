@@ -1,8 +1,8 @@
+import random
 import requests
 
 from django.conf import settings
 
-from .producer import TelegramMessageProducer, SlackMessageProducer
 
 
 class MessageConsumer:
@@ -16,6 +16,18 @@ class MessageConsumer:
         contents = requests.get(api_url).json()
         compliment = contents["compliment"]
         return compliment
+
+    def _get_doggo(self):
+        api_url = "https://random.dog/woof.json"
+        contents = requests.get(api_url).json()
+        url = contents["url"]
+        return url
+
+    def _get_kitty(self):
+        api_url = "https://api.thecatapi.com/v1/images/search"
+        contents = requests.get(api_url).json()
+        url = contents[0]["url"]
+        return url
 
     def _build_broadcast_message(self, sender, message_text):
         broadcast_msg = "{} on {}: {}".format(
@@ -52,8 +64,7 @@ class SlackMessageConsumer(MessageConsumer):
             broadcast_msg = self._build_broadcast_message(sender, text)
 
             if settings.ENV_TYPE == "prod":
-                telegram_producer = TelegramMessageProducer()
-                telegram_producer.send_message(
+                self.bot._telegram_send_message(
                     message=broadcast_msg, chat_id=self.bot.telegram_channel_id
                 )
                 if self.bot.slack_bot_token:
@@ -76,7 +87,7 @@ class TelegramMessageConsumer(MessageConsumer):
 
     def __init__(self, bot, request_json, *args, **kwargs):
         super().__init__(bot, request_json, *args, **kwargs)
-        self.bound_method_dict.update({"/doggo": "doggo"})
+        self.bound_method_dict.update({"/doggo": "doggo", "/kitty":"kitty"})
 
     def _get_message_obj(self):
         return self.request_json["message"]
@@ -114,15 +125,14 @@ class TelegramMessageConsumer(MessageConsumer):
                 sender = self._get_sender_string()
 
                 broadcast_msg = self._build_broadcast_message(sender, text)
-                telegram_producer = TelegramMessageProducer()
-                telegram_producer.send_message(
-                    message=broadcast_msg, chat_id=self.bot.telegram_channel_id
+                
+                self.bot._telegram_send_message(
+                    message=broadcast_msg, chat_id=self.bot.telegram_channel.channel_id
                 )
 
-                compliment = self._get_compliment()
-                telegram_producer.send_message(
-                    message=compliment, chat_id=self._get_chat_obj()["id"]
-                )
+                url_function = random.choice([self._get_kitty, self._get_doggo])
+                url = url_function()
+                self.bot._telegram_send_photo(chat_id=self._get_chat_obj()["id"], photo=url)
 
                 if all(
                     [
@@ -140,9 +150,11 @@ class TelegramMessageConsumer(MessageConsumer):
     def doggo(self):
         # Just to ensure correct method is being called
         self._get_command_message_string("doggo")
-
-        api_url = "https://random.dog/woof.json"
-        contents = requests.get(api_url).json()
-        dog_url = contents["url"]
-        telegram_producer = TelegramMessageProducer()
-        telegram_producer.send_photo(chat_id=self._get_chat_obj()["id"], photo=dog_url)
+        url = self._get_doggo()
+        self.bot._telegram_send_photo(chat_id=self._get_chat_obj()["id"], photo=url)
+           
+    def kitty(self):
+        # Just to ensure correct method is being called
+        self._get_command_message_string("kitty")
+        url = self._get_kitty()
+        self.bot._telegram_send_photo(chat_id=self._get_chat_obj()["id"], photo=url)

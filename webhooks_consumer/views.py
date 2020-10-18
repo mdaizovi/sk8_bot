@@ -6,9 +6,8 @@ from django.views import View
 from django.http import HttpResponse
 
 from .consumer import TelegramMessageConsumer, SlackMessageConsumer
-from .producer import TelegramMessageProducer
 
-from .models import Bot
+from .models import Bot, TelegramChat
 
 
 class TelegramBotView(View):
@@ -23,7 +22,7 @@ class TelegramBotView(View):
 
     def post(self, request, *args, **kwargs):
         request_json = json.loads(request.body.decode("utf-8"))
-        # print(json.dumps(request_json, indent=4, sort_keys=True))
+        #print(json.dumps(request_json, indent=4, sort_keys=True))
         if "message" not in request_json:
             return JsonResponse({"ok": "no message to process"})
 
@@ -32,7 +31,8 @@ class TelegramBotView(View):
             chat_id = request_json["message"]["chat"]["id"]
             text = t_message["text"].strip().lower()
             try:
-                bot = Bot.objects.get(telegram_chat_id=chat_id)
+                chat = TelegramChat.objects.get(chat_id=chat_id)
+                bot = chat.bot
             except:
                 return JsonResponse({"ok": "Bot not found; command ignored"})
 
@@ -54,8 +54,7 @@ class TelegramBotView(View):
                 return JsonResponse({"ok": "POST request processed"})
             else:
                 msg = "WTF?!?"
-                telegram_producer = TelegramMessageProducer()
-                telegram_producer.send_message(
+                bot._telegram_send_message(
                     message=msg, chat_id=telegram_consumer._get_chat_obj()["id"]
                 )
 

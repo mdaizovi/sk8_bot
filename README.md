@@ -96,7 +96,7 @@ From here, `words that looks like this` are commands you are meant to type somew
 ## Running Your Local Development Environment While You Work
    - Run ngrok by navigating in the terminal to the directory where you installed it, and typing:
   
-    `./ngrok http 8000 `
+    `./ngrok http 8000`
     
   - In another terminal, activate your virtual environment:
     
