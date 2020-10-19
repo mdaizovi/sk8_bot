@@ -4,7 +4,6 @@ from django.db import models
 from django.conf import settings
 from django.core.exceptions import ValidationError
 
-from slackclient import SlackClient
 from .factory import SlackMessageFactory, TelegramMessageFactory
 
 from .model_choices import *
@@ -42,10 +41,6 @@ class TelegramChannel(models.Model):
         
 
 class Bot(models.Model):
-    TELEGRAM_URL = "https://api.telegram.org/bot"
-    BOT_TOKEN = settings.TELEGRAM_BOT_TOKEN
-    SLACK_CLIENT = None
-    
     name = models.CharField(max_length=100, null=True, blank=True)
     telegram_channel = models.ForeignKey(
         TelegramChannel, null=True, blank=True, on_delete=models.SET_NULL
@@ -59,9 +54,6 @@ class Bot(models.Model):
     # ---------------------------------------------------------------------------
     def __str__(self):
         return "{}: {}".format(self.__class__.__name__, self.name)
-
-    def _build_url(self, api_action):
-        return "{}{}/{}".format(self.TELEGRAM_URL, self.BOT_TOKEN, api_action)
 
 
 class BotOutput(models.Model):
@@ -100,7 +92,21 @@ class BotOutput(models.Model):
 
     def get_factory(self):
         factories = {PlatformChoices.TELEGRAM: TelegramMessageFactory, PlatformChoices.SLACK: SlackMessageFactory}
-        return consumers.get(self.output_platform)
+        return factories.get(self.output_platform)
+
+    def get_output_channel(self):
+        channel_attr_list = ["output_telegram_channel", "output_slack_channel"]
+        for c in channel_attr_list:
+            print("c: {}".format(c))
+            val = getattr(self, c)
+            print("val: {}".format(val))
+            if val:
+                if hasattr(val, "channel_id"):
+                    return getattr(val, "channel_id")
+                else:
+                    return val
+                
+        
 
 class BotAction(models.Model):
     command = models.CharField(max_length=100, help_text = "the command that triggers function, like /sk8")

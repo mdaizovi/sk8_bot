@@ -1,13 +1,14 @@
 import json
 import urllib
 
+from django.conf import settings
 from django.http import JsonResponse
 from django.views import View
 from django.http import HttpResponse
 
 from .factory import SlackMessageFactory, TelegramMessageFactory
 
-from .models import Bot, TelegramChat
+from .models import Bot, TelegramChat, BotAction
 from .model_choices import FunctionChoices
 
 class TelegramBotView(View):
@@ -22,8 +23,11 @@ class TelegramBotView(View):
 
     def post(self, request, *args, **kwargs):
         request_json = json.loads(request.body.decode("utf-8"))
-        print(request_json)
-        # print(json.dumps(request_json, indent=4, sort_keys=True))
+        if settings.ENV_TYPE == "develop":
+            print(json.dumps(request_json, indent=4, sort_keys=True))
+        else:
+            print(request_json)
+            
         if "message" not in request_json:
             return JsonResponse({"ok": "no message to process"})
 
@@ -43,20 +47,34 @@ class TelegramBotView(View):
         
         if text[0] == "/":  # If it's not a command we do nothing
             textlist = text.split()
-            command = textlist[0]
+            command = textlist[0].replace("/", "")
+            print("command: {}".format(command))
             try:
                 botaction = bot.botaction_set.get(command=command)
+                print("botaction: {}".format(botaction))
+                
             except BotAction.DoesNotExist:
-                bot._telegram_send_message(
-                    message="WTF?!?", chat_id=chat_id)
+                print("not found")
+                print(bot.botaction_set.all())
+                factory = TelegramMessageFactory(bot, request_json)
+                factory._send_output(output_target=chat_id, output_content="WTF?!?")
+                return JsonResponse({"ok": "Action not found"})
             
-            factory = bot.get_factory(
-                request_json=request_json, bot=bot
-            )
-            method = getattr(factory, "get_{}".format(botaction.output.output_function))
-            # content will be either a string of what to post, or an image.
-            content = method()
-
+            for o in botaction.output.all():
+                print("\n\no: {}".format(o))
+                factory_class = o.get_factory()
+                factory = factory_class(bot=bot, request_json=request_json)
+                method = getattr(factory, "_get_{}".format(o.output_function))
+                print("method: {}".format(method))
+                # content will be either a string of what to post, or an image.
+                content = method()
+                print("content: {}".format(content))
+                output_channel = o.get_output_channel()
+                print("output_channel: {}".format(output_channel))
+                if not output_channel:
+                    output_channel = chat_id 
+                factory._send_output(output_target=output_channel, output_content=content)
+            return JsonResponse({"ok": "Action Completed"})
 
         return JsonResponse({"ok": "no need to process"})
 
@@ -81,7 +99,7 @@ class SlackBotView(View):
 
         if bot:
             command = request_dict["command"]
-            slack_factory = SlackMessageFactory(request_dict)
+            slack_factory = SlackMessageFactory(bot, request_dict)
             method = getattr(
                 slack_factory, slack_factory.bound_method_dict.get(command)
             )
