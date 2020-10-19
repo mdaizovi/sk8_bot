@@ -4,7 +4,6 @@ import requests
 from django.conf import settings
 
 
-
 class MessageConsumer:
     def __init__(self, bot, request_json):
         self.bot = bot
@@ -67,11 +66,11 @@ class SlackMessageConsumer(MessageConsumer):
                 self.bot._telegram_send_message(
                     message=broadcast_msg, chat_id=self.bot.telegram_channel_id
                 )
-                if self.bot.slack_bot_token:
-                    slack_producer = SlackMessageProducer(
-                        slack_bot_token=self.bot.slack_bot_token
-                    )
-                    slack_producer.post_sk8date(broadcast_msg)
+                # if self.bot.slack_bot_token:
+                #     slack_producer = SlackMessageProducer(
+                #         slack_bot_token=self.bot.slack_bot_token
+                #     )
+                #     slack_producer.post_sk8date(broadcast_msg)
 
             # response_text = self._get_compliment()  # pythonanywhere doesn't support threading and this takes too long so slack times out
             response_text = "Thanks!"
@@ -134,18 +133,18 @@ class TelegramMessageConsumer(MessageConsumer):
                 url = url_function()
                 self.bot._telegram_send_photo(chat_id=self._get_chat_obj()["id"], photo=url)
 
-                if all(
-                    [
-                        settings.ENV_TYPE == "prod",
-                        self.bot.slack_bot_token,
-                        self.bot.slack_channel_name,
-                    ]
-                ):
-                    slack_producer = SlackMessageProducer(
-                        slack_bot_token=self.bot.slack_bot_token,
-                        slack_channel_name=self.bot.slack_channel_name,
-                    )
-                    slack_producer.post_sk8date(broadcast_msg)
+                # if all(
+                #     [
+                #         settings.ENV_TYPE == "prod",
+                #         self.bot.slack_bot_token,
+                #         self.bot.slack_channel_name,
+                #     ]
+                # ):
+                #     slack_producer = SlackMessageProducer(
+                #         slack_bot_token=self.bot.slack_bot_token,
+                #         slack_channel_name=self.bot.slack_channel_name,
+                #     )
+                #     slack_producer.post_sk8date(broadcast_msg)
 
     def doggo(self):
         # Just to ensure correct method is being called
