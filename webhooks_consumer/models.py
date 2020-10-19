@@ -62,7 +62,7 @@ class Bot(models.Model):
         return "{}{}/{}".format(self.TELEGRAM_URL, self.BOT_TOKEN, api_action)
 
     def _slack_client(self):
-        self.SLACK_CLIENT = SlackClient(slack_bot_token)
+        self.SLACK_CLIENT = SlackClient(self.slack_bot_token)
 
     def _slack_post(self, message_text):
         if not self.SLACK_CLIENT:
