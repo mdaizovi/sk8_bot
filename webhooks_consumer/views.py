@@ -5,10 +5,10 @@ from django.http import JsonResponse
 from django.views import View
 from django.http import HttpResponse
 
-from .consumer import TelegramMessageConsumer, SlackMessageConsumer
+from .factory import SlackMessageFactory, TelegramMessageFactory
 
 from .models import Bot, TelegramChat
-
+from .model_choices import FunctionChoices
 
 class TelegramBotView(View):
     # https://api.telegram.org/bot<token>/setWebhook?url=<url>/webhooks/tutorial/
@@ -22,7 +22,8 @@ class TelegramBotView(View):
 
     def post(self, request, *args, **kwargs):
         request_json = json.loads(request.body.decode("utf-8"))
-        print(json.dumps(request_json, indent=4, sort_keys=True))
+        print(request_json)
+        # print(json.dumps(request_json, indent=4, sort_keys=True))
         if "message" not in request_json:
             return JsonResponse({"ok": "no message to process"})
 
@@ -39,24 +40,23 @@ class TelegramBotView(View):
         except Exception as e:
             return JsonResponse({"ok": "No message text to process"})
 
+        
         if text[0] == "/":  # If it's not a command we do nothing
             textlist = text.split()
             command = textlist[0]
-            telegram_consumer = TelegramMessageConsumer(
+            try:
+                botaction = bot.botaction_set.get(command=command)
+            except BotAction.DoesNotExist:
+                bot._telegram_send_message(
+                    message="WTF?!?", chat_id=chat_id)
+            
+            factory = bot.get_factory(
                 request_json=request_json, bot=bot
             )
+            method = getattr(factory, "get_{}".format(botaction.output.output_function))
+            # content will be either a string of what to post, or an image.
+            content = method()
 
-            if command in telegram_consumer.bound_method_dict.keys():
-                method = getattr(
-                    telegram_consumer, telegram_consumer.bound_method_dict.get(command)
-                )
-                method()
-                return JsonResponse({"ok": "POST request processed"})
-            else:
-                msg = "WTF?!?"
-                bot._telegram_send_message(
-                    message=msg, chat_id=telegram_consumer._get_chat_obj()["id"]
-                )
 
         return JsonResponse({"ok": "no need to process"})
 
@@ -81,9 +81,9 @@ class SlackBotView(View):
 
         if bot:
             command = request_dict["command"]
-            slack_consumer = SlackMessageConsumer(request_dict)
+            slack_factory = SlackMessageFactory(request_dict)
             method = getattr(
-                slack_consumer, slack_consumer.bound_method_dict.get(command)
+                slack_factory, slack_factory.bound_method_dict.get(command)
             )
             response_obj = method()
             response_text = "Thanks!"
