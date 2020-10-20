@@ -111,10 +111,9 @@ class SlackBotView(View):
                     factory = factory_class(request_json=request_dict)
                     content = o.get_factory_method_content(factory =factory)
                     
-                    output_channel = o.output_channel.channel_id
+                    output_channel = o.output_channel
                     if output_channel:
-                        output_channel_id = output_channel.channel_id
-                        factory._send_output(output_target=output_channel, output_content=content)
+                        factory._send_output(output_target=output_channel.channel_id, output_content=content)
                     
                 response_text = "Thanks!"
                 
