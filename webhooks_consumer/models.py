@@ -44,16 +44,6 @@ class OutputChannel(models.Model):
                 new = "".join(["0" for s in range(difference)])
                 self.channel_id = "-" + new + fragment
         super().save()
-        
-
-class Bot(models.Model):
-    name = models.CharField(max_length=100, null=True, blank=True)
-    
-    slack_bot_token = models.CharField(max_length=100, null=True, blank=True)
-
-    # ---------------------------------------------------------------------------
-    def __str__(self):
-        return "{}: {}".format(self.__class__.__name__, self.name)
 
 
 class BotOutput(models.Model):

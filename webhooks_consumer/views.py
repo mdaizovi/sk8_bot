@@ -8,8 +8,10 @@ from django.http import HttpResponse
 
 from .factory import SlackMessageFactory, TelegramMessageFactory
 
+from misc.utils import num_queries
 from .models import InputSource, OutputChannel, BotAction, BotOutput
-from .model_choices import FunctionChoices
+from .model_choices import FunctionChoices, PlatformChoices
+
 
 class TelegramBotView(View):
     # https://api.telegram.org/bot<token>/setWebhook?url=<url>/webhooks/tutorial/
@@ -22,6 +24,7 @@ class TelegramBotView(View):
         return HttpResponse("Hi!")
 
     def post(self, request, *args, **kwargs):
+        num_queries(reset=False, string_marker="start")
         request_json = json.loads(request.body.decode("utf-8"))
         if settings.ENV_TYPE == "develop":
             print(json.dumps(request_json, indent=4, sort_keys=True))
@@ -36,8 +39,9 @@ class TelegramBotView(View):
             chat_id = request_json["message"]["chat"]["id"]
             text = t_message["text"].strip().lower()
             try:
-                chat = InputSource.objects.get(chat_id=chat_id, input_platform=PlatformChoices.TELEGRAM)
-            except:
+                # prefetch here actually increased the connection count
+                input_source = InputSource.objects.get(chat_id=chat_id, platform=PlatformChoices.TELEGRAM)
+            except Exception as e:
                 return JsonResponse({"ok": "Input source not found; command ignored"})
 
         except Exception as e:
@@ -48,8 +52,7 @@ class TelegramBotView(View):
             textlist = text.split()
             command = textlist[0].replace("/", "")
             try:
-                botaction = chat.botaction_set.get(command=command, input_platform=PlatformChoices.TELEGRAM)
-                
+                botaction = input_source.actions.prefetch_related('output').prefetch_related('output__output_channel').get(command=command)
             except BotAction.DoesNotExist:
                 factory = TelegramMessageFactory(request_json)
                 factory._send_output(output_target=chat_id, output_content="WTF?!?")
@@ -60,10 +63,12 @@ class TelegramBotView(View):
                 factory = factory_class(request_json=request_json)
                 content = o.get_factory_method_content(factory =factory)
                 
-                output_channel = o.output_channel.channel_id
+                output_channel = o.output_channel
+                if output_channel:
+                    output_channel_id = output_channel.channel_id
                 if not output_channel:
-                    output_channel = chat_id 
-                factory._send_output(output_target=output_channel, output_content=content)
+                    output_channel_id = chat_id 
+                factory._send_output(output_target=output_channel_id, output_content=content)
                 
             return JsonResponse({"ok": "Action Completed"})
 
@@ -87,17 +92,16 @@ class SlackBotView(View):
         else:
             print(request_json)
 
-
         slack_team_id = request_dict["team_id"]
         try:
-            inputsource = InputSource.objects.get(chat_id=slack_team_id, input_platform=PlatformChoices.SLACK)
+            inputsource = InputSource.objects.get(chat_id=slack_team_id, platform=PlatformChoices.SLACK)
         except:
             response_text = "Input with slack team id not found; command ignored"
 
         if not response_text:
             command = request_dict["command"]
             try:
-                botaction = inputsource.botaction_set.get(command=command, input_platform=PlatformChoices.SLACK)
+                botaction = input_source.actions.prefetch_related('output').prefetch_related('output__output_channel').get(command=command)
             except BotAction.DoesNotExist:
                  response_text = "Source has no action for {}".format(command)
             

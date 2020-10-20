@@ -115,10 +115,18 @@ STATIC_URL = "/static/"
 
 ADMINS = [("Mic", env("ADMIN_EMAIL"))]
 
-TELEGRAM_BOT_TOKEN = env("TELEGRAM_BOT_TOKEN")
+# to use: python manage.py createcachetable
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'webhooks_consumer',
+    }
+}
 
+TELEGRAM_BOT_TOKEN = env("TELEGRAM_BOT_TOKEN")
 # do i really use these in testing or can i get rid of?
 TELEGRAM_APP_API_ID = env("TELEGRAM_APP_API_ID")
 TELEGRAM_APP_API_HASH = env("TELEGRAM_APP_API_HASH")
 TELETHON_SESSION = env("TELETHON_SESSION")
 
+SLACK_BOT_TOKEN = env("SLACK_BOT_TOKEN")
