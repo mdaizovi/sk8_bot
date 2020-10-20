@@ -70,6 +70,12 @@ class GenericMessageFactory:
     def _parse_telegram_message_string(self):
         return self._parse_telegram_message_obj()["text"]
 
+    def _parse_slack_command_message_string(self):
+        return self.request_json["text"]
+
+    def _parse_slack_sender_string(self):
+        return self.request_json["user_name"]
+
     def _parse_telegram_command_message_string(self, command_str):
         msg_str = self._parse_telegram_message_string().strip().lower()
         if command_str in msg_str:
@@ -134,12 +140,6 @@ class SlackMessageFactory(GenericMessageFactory):
 
     def __init__(self, request_json):
         super().__init__(request_json)
-
-    def _parse_slack_command_message_string(self):
-        return self.request_json["text"]
-
-    def _parse_slack_sender_string(self):
-        return self.request_json["user_name"]
 
     def _send_output(self, output_target, output_content):
         slack_client = SlackClient(settings.SLACK_BOT_TOKEN)
