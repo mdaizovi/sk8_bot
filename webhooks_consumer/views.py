@@ -8,7 +8,7 @@ from django.http import HttpResponse
 
 from .factory import SlackMessageFactory, TelegramMessageFactory
 
-from .models import Bot, TelegramChat, BotAction
+from .models import InputSource, OutputChannel, BotAction, BotOutput
 from .model_choices import FunctionChoices
 
 class TelegramBotView(View):
@@ -36,10 +36,9 @@ class TelegramBotView(View):
             chat_id = request_json["message"]["chat"]["id"]
             text = t_message["text"].strip().lower()
             try:
-                chat = TelegramChat.objects.get(chat_id=chat_id)
-                bot = chat.bot
+                chat = InputSource.objects.get(chat_id=chat_id, input_platform=PlatformChoices.TELEGRAM)
             except:
-                return JsonResponse({"ok": "Bot not found; command ignored"})
+                return JsonResponse({"ok": "Input source not found; command ignored"})
 
         except Exception as e:
             return JsonResponse({"ok": "No message text to process"})
@@ -49,19 +48,19 @@ class TelegramBotView(View):
             textlist = text.split()
             command = textlist[0].replace("/", "")
             try:
-                botaction = bot.botaction_set.get(command=command)
+                botaction = chat.botaction_set.get(command=command, input_platform=PlatformChoices.TELEGRAM)
                 
             except BotAction.DoesNotExist:
-                factory = TelegramMessageFactory(bot, request_json)
+                factory = TelegramMessageFactory(request_json)
                 factory._send_output(output_target=chat_id, output_content="WTF?!?")
                 return JsonResponse({"ok": "Action not found"})
             
             for o in botaction.output.all():
                 factory_class = o.get_factory()
-                factory = factory_class(bot=bot, request_json=request_json)
+                factory = factory_class(request_json=request_json)
                 content = o.get_factory_method_content(factory =factory)
                 
-                output_channel = o.get_output_channel()
+                output_channel = o.output_channel.channel_id
                 if not output_channel:
                     output_channel = chat_id 
                 factory._send_output(output_target=output_channel, output_content=content)
@@ -83,27 +82,31 @@ class SlackBotView(View):
             for k, v in urllib.parse.parse_qsl(request.body)
         }
         request_json = json.loads(request_dict)
+        if settings.ENV_TYPE == "develop":
+            print(json.dumps(request_json, indent=4, sort_keys=True))
+        else:
+            print(request_json)
+
 
         slack_team_id = request_dict["team_id"]
         try:
-            bot = Bot.objecs.get(slack_team_id=slack_team_id)
+            inputsource = InputSource.objects.get(chat_id=slack_team_id, input_platform=PlatformChoices.SLACK)
         except:
-            bot = None
-            response_text = "Bot with slack team id not found; command ignored"
+            response_text = "Input with slack team id not found; command ignored"
 
-        if bot:
+        if not response_text:
             command = request_dict["command"]
             try:
-                botaction = bot.botaction_set.get(command=command)
+                botaction = inputsource.botaction_set.get(command=command, input_platform=PlatformChoices.SLACK)
             except BotAction.DoesNotExist:
-                 response_text = "Bot has no action for {}".format(command)
+                 response_text = "Source has no action for {}".format(command)
             
             if not response_text:
                 for o in botaction.output.all():
                     factory_class = o.get_factory()
-                    factory = factory_class(bot=bot, request_json=request_json)
+                    factory = factory_class(request_json=request_json)
                     content = o.get_factory_method_content(factory =factory)
-                    output_channel = o.get_output_channel()
+                    output_channel = o.output_channel.channel_id
                     factory._send_output(output_target=output_channel, output_content=content)
                 response_text = "Thanks!"
                 

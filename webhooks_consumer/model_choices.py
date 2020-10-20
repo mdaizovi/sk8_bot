@@ -1,6 +1,7 @@
 class PlatformChoices:
     TELEGRAM = "TLGRM"
     SLACK = "SLCK"
+    
     CHOICES = (
         (TELEGRAM, "Telegram"),
         (SLACK, "Slack"),

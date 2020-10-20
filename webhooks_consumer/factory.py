@@ -8,8 +8,7 @@ from django.conf import settings
 
 
 class GenericMessageFactory:
-    def __init__(self, bot, request_json):
-        self.bot = bot
+    def __init__(self,request_json):
         self.request_json = request_json
 
     def _get_compliment(self):
@@ -114,8 +113,8 @@ class GenericMessageFactory:
 
 class TelegramMessageFactory(GenericMessageFactory):
     
-    def __init__(self, bot, request_json):
-        super().__init__(bot, request_json)
+    def __init__(self, request_json):
+        super().__init__(request_json)
 
     def _build_url(self, api_action):
         url = "https://api.telegram.org/bot{}/{}".format(settings.TELEGRAM_BOT_TOKEN, api_action)
@@ -133,8 +132,8 @@ class TelegramMessageFactory(GenericMessageFactory):
             
 class SlackMessageFactory(GenericMessageFactory):
 
-    def __init__(self, bot, request_json):
-        super().__init__(bot, request_json)
+    def __init__(self, request_json):
+        super().__init__(request_json)
 
     def _parse_slack_command_message_string(self):
         return self.request_json["text"]
@@ -143,7 +142,7 @@ class SlackMessageFactory(GenericMessageFactory):
         return self.request_json["user_name"]
 
     def _send_output(self, output_target, output_content):
-        slack_client = SlackClient(self.bot.slack_bot_token)
+        slack_client = SlackClient(settings.SLACK_BOT_TOKEN)
         response = slack_client.api_call(
             "chat.postMessage", channel=output_target, text=output_content
         )
