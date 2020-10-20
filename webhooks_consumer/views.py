@@ -82,14 +82,14 @@ class SlackBotView(View):
     def post(self, request, *args, **kwargs):
         response_text = None
         response_dict = {"blocks": [{"type": "section", "text": {"type": "mrkdwn",},}]}
-        request_json = {
+        request_dict = {
             k.decode("utf-8"): v.decode("utf-8")
             for k, v in urllib.parse.parse_qsl(request.body)
         }
         if settings.ENV_TYPE == "develop":
-            print(json.dumps(request_json, indent=4, sort_keys=True))
+            print(json.dumps(request_dict, indent=4, sort_keys=True))
         else:
-            print(request_json)
+            print(request_dict)
 
         slack_team_id = request_dict["team_id"]
         try:
@@ -107,7 +107,7 @@ class SlackBotView(View):
             if not response_text:
                 for o in botaction.output.all():
                     factory_class = o.get_factory()
-                    factory = factory_class(request_json=request_json)
+                    factory = factory_class(request_json=request_dict)
                     content = o.get_factory_method_content(factory =factory)
                     output_channel = o.output_channel.channel_id
                     factory._send_output(output_target=output_channel, output_content=content)
