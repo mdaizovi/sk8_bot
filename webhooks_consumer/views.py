@@ -82,11 +82,10 @@ class SlackBotView(View):
     def post(self, request, *args, **kwargs):
         response_text = None
         response_dict = {"blocks": [{"type": "section", "text": {"type": "mrkdwn",},}]}
-        request_dict = {
+        request_json = {
             k.decode("utf-8"): v.decode("utf-8")
             for k, v in urllib.parse.parse_qsl(request.body)
         }
-        request_json = json.loads(request_dict)
         if settings.ENV_TYPE == "develop":
             print(json.dumps(request_json, indent=4, sort_keys=True))
         else:
