@@ -66,7 +66,7 @@ class TelegramBotView(View):
                 output_channel = o.output_channel
                 if output_channel:
                     output_channel_id = output_channel.channel_id
-                if not output_channel:
+                else:
                     output_channel_id = chat_id 
                 factory._send_output(output_target=output_channel_id, output_content=content)
                 
@@ -110,8 +110,12 @@ class SlackBotView(View):
                     factory_class = o.get_factory()
                     factory = factory_class(request_json=request_dict)
                     content = o.get_factory_method_content(factory =factory)
+                    
                     output_channel = o.output_channel.channel_id
-                    factory._send_output(output_target=output_channel, output_content=content)
+                    if output_channel:
+                        output_channel_id = output_channel.channel_id
+                        factory._send_output(output_target=output_channel, output_content=content)
+                    
                 response_text = "Thanks!"
                 
         response_dict["blocks"][0]["text"]["text"] = response_text
