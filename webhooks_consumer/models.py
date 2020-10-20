@@ -29,7 +29,7 @@ class TelegramChannel(models.Model):
     # ---------------------------------------------------------------------------
     def save(self, *args, **kwargs):
         # IMPORTANT: channel IDs are always negative and 13 characters long.
-        if self.channel_id[-1] != "-":
+        if self.channel_id[0] != "-":
             self.channel_id = "-" + self.channel_id
         if len(self.channel_id) < 14:
             fragment = self.channel_id[1:]
