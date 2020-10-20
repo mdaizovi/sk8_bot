@@ -57,7 +57,15 @@ class TelegramBotView(View):
                 return JsonResponse({"ok": "Action not found"})
             
             for o in botaction.output.all():
-                o.do_factory_method()
+                factory_class = o.get_factory()
+                factory = factory_class(bot=bot, request_json=request_json)
+                content = o.get_factory_method_content(factory =factory)
+                
+                output_channel = o.get_output_channel()
+                if not output_channel:
+                    output_channel = chat_id 
+                factory._send_output(output_target=output_channel, output_content=content)
+                
             return JsonResponse({"ok": "Action Completed"})
 
         return JsonResponse({"ok": "no need to process"})
@@ -92,7 +100,11 @@ class SlackBotView(View):
             
             if not response_text:
                 for o in botaction.output.all():
-                    o.do_factory_method()
+                    factory_class = o.get_factory()
+                    factory = factory_class(bot=bot, request_json=request_json)
+                    content = o.get_factory_method_content(factory =factory)
+                    output_channel = o.get_output_channel()
+                    factory._send_output(output_target=output_channel, output_content=content)
                 response_text = "Thanks!"
                 
         response_dict["blocks"][0]["text"]["text"] = response_text

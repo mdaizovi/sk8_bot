@@ -94,16 +94,11 @@ class BotOutput(models.Model):
         factories = {PlatformChoices.TELEGRAM: TelegramMessageFactory, PlatformChoices.SLACK: SlackMessageFactory}
         return factories.get(self.output_platform)
 
-    def do_factory_method(self):
-        factory_class = self.get_factory()
-        factory = factory_class(bot=bot, request_json=request_json)
-        method = getattr(factory, "_get_{}".format(o.output_function))
+    def get_factory_method_content(self, factory):
+        method = getattr(factory, "_get_{}".format(self.output_function))
         # content will be either a string of what to post, or an image.
         content = method()
-        output_channel = self.get_output_channel()
-        if not output_channel:
-            output_channel = chat_id 
-        factory._send_output(output_target=output_channel, output_content=content)
+        return content
 
     def get_output_channel(self):
         channel_attr_list = ["output_telegram_channel", "output_slack_channel"]
