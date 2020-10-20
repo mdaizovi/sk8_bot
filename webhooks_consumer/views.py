@@ -48,29 +48,21 @@ class TelegramBotView(View):
         if text[0] == "/":  # If it's not a command we do nothing
             textlist = text.split()
             command = textlist[0].replace("/", "")
-            print("command: {}".format(command))
             try:
                 botaction = bot.botaction_set.get(command=command)
-                print("botaction: {}".format(botaction))
                 
             except BotAction.DoesNotExist:
-                print("not found")
-                print(bot.botaction_set.all())
                 factory = TelegramMessageFactory(bot, request_json)
                 factory._send_output(output_target=chat_id, output_content="WTF?!?")
                 return JsonResponse({"ok": "Action not found"})
             
             for o in botaction.output.all():
-                print("\n\no: {}".format(o))
                 factory_class = o.get_factory()
                 factory = factory_class(bot=bot, request_json=request_json)
                 method = getattr(factory, "_get_{}".format(o.output_function))
-                print("method: {}".format(method))
                 # content will be either a string of what to post, or an image.
                 content = method()
-                print("content: {}".format(content))
                 output_channel = o.get_output_channel()
-                print("output_channel: {}".format(output_channel))
                 if not output_channel:
                     output_channel = chat_id 
                 factory._send_output(output_target=output_channel, output_content=content)

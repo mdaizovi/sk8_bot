@@ -97,10 +97,9 @@ class BotOutput(models.Model):
     def get_output_channel(self):
         channel_attr_list = ["output_telegram_channel", "output_slack_channel"]
         for c in channel_attr_list:
-            print("c: {}".format(c))
             val = getattr(self, c)
-            print("val: {}".format(val))
             if val:
+                # since this is a nested object but slack is jsut text. should make more consistent.
                 if hasattr(val, "channel_id"):
                     return getattr(val, "channel_id")
                 else:
