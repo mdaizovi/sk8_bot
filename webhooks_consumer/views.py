@@ -98,7 +98,8 @@ class SlackBotView(View):
             response_text = "Input with slack team id not found; command ignored"
 
         if not response_text:
-            command = request_dict["command"]
+            command = request_dict["command"][1:] # remove the /
+            
             try:
                 botaction = input_source.actions.prefetch_related('output').prefetch_related('output__output_channel').get(command=command)
             except BotAction.DoesNotExist:
