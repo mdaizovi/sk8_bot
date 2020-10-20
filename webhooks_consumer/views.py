@@ -57,15 +57,7 @@ class TelegramBotView(View):
                 return JsonResponse({"ok": "Action not found"})
             
             for o in botaction.output.all():
-                factory_class = o.get_factory()
-                factory = factory_class(bot=bot, request_json=request_json)
-                method = getattr(factory, "_get_{}".format(o.output_function))
-                # content will be either a string of what to post, or an image.
-                content = method()
-                output_channel = o.get_output_channel()
-                if not output_channel:
-                    output_channel = chat_id 
-                factory._send_output(output_target=output_channel, output_content=content)
+                o.do_factory_method()
             return JsonResponse({"ok": "Action Completed"})
 
         return JsonResponse({"ok": "no need to process"})
@@ -76,11 +68,13 @@ class SlackBotView(View):
         return HttpResponse("Hi!")
 
     def post(self, request, *args, **kwargs):
+        response_text = None
         response_dict = {"blocks": [{"type": "section", "text": {"type": "mrkdwn",},}]}
         request_dict = {
             k.decode("utf-8"): v.decode("utf-8")
             for k, v in urllib.parse.parse_qsl(request.body)
         }
+        request_json = json.loads(request_dict)
 
         slack_team_id = request_dict["team_id"]
         try:
@@ -91,12 +85,15 @@ class SlackBotView(View):
 
         if bot:
             command = request_dict["command"]
-            slack_factory = SlackMessageFactory(bot, request_dict)
-            method = getattr(
-                slack_factory, slack_factory.bound_method_dict.get(command)
-            )
-            response_obj = method()
-            response_text = "Thanks!"
-
+            try:
+                botaction = bot.botaction_set.get(command=command)
+            except BotAction.DoesNotExist:
+                 response_text = "Bot has no action for {}".format(command)
+            
+            if not response_text:
+                for o in botaction.output.all():
+                    o.do_factory_method()
+                response_text = "Thanks!"
+                
         response_dict["blocks"][0]["text"]["text"] = response_text
         return JsonResponse(response_dict)
