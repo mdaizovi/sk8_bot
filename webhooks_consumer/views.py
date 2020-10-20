@@ -93,7 +93,7 @@ class SlackBotView(View):
 
         slack_team_id = request_dict["team_id"]
         try:
-            inputsource = InputSource.objects.get(chat_id=slack_team_id, platform=PlatformChoices.SLACK)
+            input_source = InputSource.objects.get(chat_id=slack_team_id, platform=PlatformChoices.SLACK)
         except:
             response_text = "Input with slack team id not found; command ignored"
 
