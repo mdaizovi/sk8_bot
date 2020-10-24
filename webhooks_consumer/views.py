@@ -58,19 +58,22 @@ class TelegramBotView(View):
                 factory._send_output(output_target=chat_id, output_content="WTF?!?")
                 return JsonResponse({"ok": "Action not found"})
             
-            for o in botaction.output.all():
-                factory_class = o.get_factory()
-                factory = factory_class(request_json=request_json)
-                content = o.get_factory_method_content(factory =factory)
-                
-                output_channel = o.output_channel
-                if output_channel:
-                    output_channel_id = output_channel.channel_id
-                else:
-                    output_channel_id = chat_id 
-                factory._send_output(output_target=output_channel_id, output_content=content)
-                
-            return JsonResponse({"ok": "Action Completed"})
+            if botaction.content_required and len(textlist) <= 1:
+                return JsonResponse({"ok": "Content Required"})
+            else:
+                for o in botaction.output.all():
+                    factory_class = o.get_factory()
+                    factory = factory_class(request_json=request_json)
+                    content = o.get_factory_method_content(factory =factory)
+                    
+                    output_channel = o.output_channel
+                    if output_channel:
+                        output_channel_id = output_channel.channel_id
+                    else:
+                        output_channel_id = chat_id 
+                    factory._send_output(output_target=output_channel_id, output_content=content)
+                    
+                return JsonResponse({"ok": "Action Completed"})
 
         return JsonResponse({"ok": "no need to process"})
 
@@ -106,16 +109,19 @@ class SlackBotView(View):
                  response_text = "Source has no action for {}".format(command)
             
             if not response_text:
-                for o in botaction.output.all():
-                    factory_class = o.get_factory()
-                    factory = factory_class(request_json=request_dict)
-                    content = o.get_factory_method_content(factory =factory)
-                    
-                    output_channel = o.output_channel
-                    if output_channel:
-                        factory._send_output(output_target=output_channel.channel_id, output_content=content)
-                    
-                response_text = "Thanks!"
+                if botaction.content_required and len(request_dict["text"]) < 1:
+                    response_text = "Please enter words as well, not just the command"
+                else:
+                    for o in botaction.output.all():
+                        factory_class = o.get_factory()
+                        factory = factory_class(request_json=request_dict)
+                        content = o.get_factory_method_content(factory =factory)
+                        
+                        output_channel = o.output_channel
+                        if output_channel:
+                            factory._send_output(output_target=output_channel.channel_id, output_content=content)
+                        
+                    response_text = "Thanks!"
                 
         response_dict["blocks"][0]["text"]["text"] = response_text
         return JsonResponse(response_dict)

@@ -81,6 +81,7 @@ class BotOutput(models.Model):
 
 class BotAction(models.Model):
     command = models.CharField(max_length=100, help_text = "the command that triggers function, like /sk8")
+    content_required = models.BooleanField(default=False, help_text = "Does the message require content? EG sk8 True, doggo False")
     output = models.ManyToManyField("BotOutput")
     
     @property

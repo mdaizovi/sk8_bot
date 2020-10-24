@@ -127,7 +127,7 @@ class TelegramMessageFactory(GenericMessageFactory):
         return url
 
     def _send_output(self, output_target, output_content):
-        has_image_extension = [True for ext in ["jpg", "jpeg", "png", "gif", "mp4"] if output_content.lower().endswith(".{}".format(ext))]
+        has_image_extension = [True for ext in ["jpg", "jpeg", "png", "gif", "mp4", "webm"] if output_content.lower().endswith(".{}".format(ext))]
         if "http" in output_content and any(has_image_extension): # it's a photo 
             data = {"chat_id": output_target, "photo": output_content}
             requests.post(self._build_url(api_action="sendPhoto"), data=data)
