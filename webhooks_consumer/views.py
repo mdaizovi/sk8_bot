@@ -9,7 +9,7 @@ from django.http import HttpResponse
 from .factory import SlackMessageFactory, TelegramMessageFactory
 
 from misc.utils import num_queries
-from .models import InputSource, OutputChannel, BotAction, BotOutput
+from .models import InputSource, OutputChannel, BotAction, BotOutput, BlockedUser
 from .model_choices import FunctionChoices, PlatformChoices
 
 
@@ -47,6 +47,10 @@ class TelegramBotView(View):
         except Exception as e:
             return JsonResponse({"ok": "No message text to process"})
 
+        # NEVER IMPLEMENETED I think I'll just manualy block the annoying user for now
+        # poster_id = t_message["from"]["id"]
+        # if BlockedUser.objects.filter(input_source=input_source, user_id=poster_id).exists():
+        # #307781703
         
         if text[0] == "/":  # If it's not a command we do nothing
             textlist = text.split()
