@@ -91,11 +91,3 @@ class BotAction(models.Model):
     def __str__(self):
         return "{}: {} {}".format(self.__class__.__name__, self.command, self.output_display)      
 
-    
-class BlockedUser(models.Model):
-    internal_notes = models.CharField(max_length=100, help_text = "Notes on why this person was blocked.")
-    user_id = models.CharField(max_length=100, help_text = "")
-    inputsource = models.ForeignKey(
-        InputSource, help_text="Where the user is blocked from", null=True, blank=True, on_delete=models.CASCADE
-    )
-     

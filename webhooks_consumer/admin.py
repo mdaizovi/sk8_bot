@@ -1,5 +1,5 @@
 simple_admins = [
-    "InputSource","OutputChannel", "BotAction","BotOutput", "BlockedUser"
+    "InputSource","OutputChannel", "BotAction","BotOutput"
 ]
 import_str = "from django.contrib import admin\nfrom .models import {}".format(
     ", ".join([m for m in simple_admins])
