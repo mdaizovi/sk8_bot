@@ -1,3 +1,5 @@
+from .factory import SlackMessageFactory, TelegramMessageFactory
+
 class PlatformChoices:
     TELEGRAM = "TLGRM"
     SLACK = "SLCK"
@@ -7,6 +9,10 @@ class PlatformChoices:
         (SLACK, "Slack"),
     )
 
+    @staticmethod
+    def get_factory(abbrv):
+        factories = {TELEGRAM: TelegramMessageFactory, SLACK: SlackMessageFactory}
+        return factories.get(abbrv)
     
 class FunctionChoices:
     DOGGO = "doggo"

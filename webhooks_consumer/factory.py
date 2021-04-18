@@ -6,7 +6,6 @@ from slackclient import SlackClient
 
 from django.conf import settings
 
-
 class GenericMessageFactory:
     def __init__(self,request_json):
         self.request_json = request_json
@@ -63,6 +62,10 @@ class GenericMessageFactory:
     def _parse_telegram_chat_obj(self):
         return self._parse_telegram_message_obj()["chat"]
 
+    def _parse_telegram_chat_id(self):
+        t_chat = self._parse_telegram_chat_obj()
+        return t_chat.get("id")
+
     def _parse_telegram_sender_string(self):
         t_chat = self._parse_telegram_chat_obj()
         if "sender" in t_chat:
@@ -100,6 +103,17 @@ class GenericMessageFactory:
             message_text = " ".join(message_list[1:])
             sender = self._parse_telegram_sender_string()
             platform = "Telegram"
+            try:
+                # so terrible, but circular import issue.
+                # or, try to get a more specific channel nickname 
+                chat_id = self._parse_telegram_chat_id()
+                if chat_id:
+                    nicknames = {-1001258758865:"\U0001f6fc", -1001343931693:"⛸"}
+                    nickname = nicknames.get(chat_id)
+                    if nickname:
+                        platform = nickname
+            except:
+                pass
         else:
             # Slack json
             platform = "Slack"

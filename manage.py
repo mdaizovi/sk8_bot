@@ -3,6 +3,8 @@
 import os
 import sys
 
+# why is this necessary?
+#sys.path.append('./venv/lib/python3.9/site-packages')
 
 def main():
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "sk8_bot.settings")

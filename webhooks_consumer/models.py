@@ -4,12 +4,11 @@ from django.db import models
 from django.conf import settings
 from django.core.exceptions import ValidationError
 
-from .factory import SlackMessageFactory, TelegramMessageFactory
-
-from .model_choices import *
+from .model_choices import PlatformChoices, FunctionChoices
 
 class InputSource(models.Model):
     name = models.CharField(max_length=100, null=True, blank=True)
+    nickname_public = models.CharField(max_length=10, null=True, blank=True, help_text="nickname for bulletins. ex: 'nic on BSC', with BSC insread of Telegram")
     chat_id = models.CharField(max_length=100, db_index=True, help_text="Might be Telegram group chat_id, might be Slack team_id")
     platform = models.CharField(
         help_text="Telegram, Slack, etc",
@@ -70,8 +69,7 @@ class BotOutput(models.Model):
     #     return super().save(*args, **kwargs)
 
     def get_factory(self):
-        factories = {PlatformChoices.TELEGRAM: TelegramMessageFactory, PlatformChoices.SLACK: SlackMessageFactory}
-        return factories.get(self.output_platform)
+        return PlatformChoices.get_factory(self.output_platform)
 
     def get_factory_method_content(self, factory):
         method = getattr(factory, "_get_{}".format(self.output_function))
