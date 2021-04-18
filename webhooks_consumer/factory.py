@@ -10,6 +10,10 @@ from django.conf import settings
 class GenericMessageFactory:
     def __init__(self,request_json):
         self.request_json = request_json
+        # APIS to look into lateR:
+        # https://favqs.com/api
+        # https://theysaidso.com/api/#
+        # http://paperquotes.com/
 
     def _get_compliment(self):
         api_url = "https://complimentr.com/api"

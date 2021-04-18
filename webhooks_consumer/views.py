@@ -53,8 +53,8 @@ class TelegramBotView(View):
             try:
                 botaction = input_source.actions.prefetch_related('output').prefetch_related('output__output_channel').get(command=command)
             except BotAction.DoesNotExist:
-                factory = TelegramMessageFactory(request_json)
-                factory._send_output(output_target=chat_id, output_content="WTF?!?")
+                # factory = TelegramMessageFactory(request_json)
+                # factory._send_output(output_target=chat_id, output_content="WTF?!?")
                 return JsonResponse({"ok": "Action not found"})
             
             if botaction.content_required and len(textlist) <= 1:
