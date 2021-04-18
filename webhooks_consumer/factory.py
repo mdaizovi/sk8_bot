@@ -32,19 +32,30 @@ class GenericMessageFactory:
         url = contents["url"]
         return url
 
-    def _get_bunny(self):
-        api_url = "https://www.bunnies.io/"
-        contents = requests.get(api_url)
-        soup = BeautifulSoup(contents.content, 'html.parser')
-        videos = soup.findAll('video')
-        if len(videos) > 1:
-            video = videos[1]
-            source = video.find('source')
-            if source:
-                src = source['src']
-                if src:
-                    return src
-        # if something goes wrong just return a duck
+    def _get_sloth(self):
+        api_url = "https://sloth.pics/api"
+        contents = requests.get(api_url).json()
+        url = contents["url"]
+        return url
+
+    # def _get_bunny(self):
+    #     #TODO nevermind doesny work maybe with a hedless browesr
+    #     # numbers between 1-63 seem to work
+    #     bunny_id = random.randint(1,163)
+    #     # https://bunnies.media/webm/163.webm
+    #     api_url = "https://www.bunnies.io/#{}".format(bunny_id)
+    #     # numbers between 1-363 seem to work
+    #     contents = requests.get(api_url)
+    #     soup = BeautifulSoup(contents.content, 'html.parser')
+    #     videos = soup.findAll('video')
+    #     if len(videos) > 1:
+    #         video = videos[1]
+    #         source = video.find('source')
+    #         if source:
+    #             src = source['src']
+    #             if src:
+    #                 return src
+    #     # if something goes wrong just return a duck
 
     def _get_kitty(self):
         api_url = "https://api.thecatapi.com/v1/images/search"

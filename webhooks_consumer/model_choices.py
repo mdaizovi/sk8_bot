@@ -24,8 +24,9 @@ class FunctionChoices:
     TACO = "taco"
     BROADCAST = "broadcast_message"
     DUCK = "duck"
-    BUNNY = "bunny"
-    
+    BUNNY = "bunny" # doesn't work without js
+    SLOTH = "sloth" # doesn't work without js
+
     CHOICES = (
         (DOGGO , "doggo"),
         (KITTY, "kitty"),
@@ -36,7 +37,7 @@ class FunctionChoices:
         (TACO, "taco"),
         (BROADCAST, "broadcast_message"),
         (DUCK, "duck"),
-        (BUNNY, "bunny")
+        (SLOTH, "sloth")
     )
     
     def get_kwargs(self, function_name):
