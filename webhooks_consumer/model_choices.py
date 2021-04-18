@@ -11,7 +11,7 @@ class PlatformChoices:
 
     @staticmethod
     def get_factory(abbrv):
-        factories = {self.TELEGRAM: TelegramMessageFactory, self.SLACK: SlackMessageFactory}
+        factories = {"TLGRM": TelegramMessageFactory,"SLCK": SlackMessageFactory}
         return factories.get(abbrv)
     
 class FunctionChoices:
