@@ -26,6 +26,26 @@ class GenericMessageFactory:
         url = contents["url"]
         return url
 
+    def _get_duck(self):
+        api_url = "https://random-d.uk/api/v2/random"
+        contents = requests.get(api_url).json()
+        url = contents["url"]
+        return url
+
+    def _get_bunny(self):
+        api_url = "https://www.bunnies.io/"
+        contents = requests.get(api_url)
+        soup = BeautifulSoup(contents.content, 'html.parser')
+        videos = soup.findAll('video')
+        if len(videos) > 1:
+            video = videos[1]
+            source = video.find('source')
+            if source:
+                src = source['src']
+                if src:
+                    return src
+        # if something goes wrong just return a duck
+
     def _get_kitty(self):
         api_url = "https://api.thecatapi.com/v1/images/search"
         contents = requests.get(api_url).json()
