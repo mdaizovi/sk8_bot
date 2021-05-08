@@ -22,9 +22,14 @@ class GenericMessageFactory:
 
     def _get_doggo(self):
         api_url = "https://random.dog/woof.json"
-        contents = requests.get(api_url).json()
-        url = contents["url"]
-        return url
+        # raise JSONDecodeError("Expecting value", s, err.value) from None
+        #contents = requests.get(api_url).json()
+        response = requests.get(api_url)
+        if response:
+            contents = response.json()
+            if "url" in contnts:
+                url = contents["url"]
+                return url
 
     def _get_duck(self):
         api_url = "https://random-d.uk/api/v2/random"
