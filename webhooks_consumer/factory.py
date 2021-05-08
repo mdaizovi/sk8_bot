@@ -24,12 +24,17 @@ class GenericMessageFactory:
         api_url = "https://random.dog/woof.json"
         # raise JSONDecodeError("Expecting value", s, err.value) from None
         #contents = requests.get(api_url).json()
-        response = requests.get(api_url, timeout=10)
-        if response:
-            contents = response.json()
-            if "url" in contnts:
-                url = contents["url"]
-                return url
+        
+        # oh no! doggo is down!
+        # response = requests.get(api_url, timeout=10)
+        # if response:
+        #     contents = response.json()
+        #     if "url" in contnts:
+        #         url = contents["url"]
+        #         return url
+        return self._get_duck()
+
+
 
     def _get_duck(self):
         api_url = "https://random-d.uk/api/v2/random"
