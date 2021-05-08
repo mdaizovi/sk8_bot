@@ -14,7 +14,7 @@ class GenericMessageFactory:
         # https://theysaidso.com/api/#
         # http://paperquotes.com/
 
-    def _get_api_response_or_none(self, url):
+    def _get_api_response_or_none(self, api_url):
         try:
             response = requests.get(api_url, timeout=10)
             contents = response.json()
