@@ -32,15 +32,13 @@ class GenericMessageFactory:
 
     def _get_doggo(self):
         # oh no! doggo is down!
-        try:
-            api_url = "https://random.dog/woof.json"
-            contents = self._get_api_response_or_none(api_url)
-            if contents and "url" in contents:
-                url = contents["url"]
-                return url
-            return None
-        except:
-            return self._get_duck()
+        # api_url = "https://random.dog/woof.json"
+        # contents = self._get_api_response_or_none(api_url)
+        # if contents and "url" in contents:
+        #     url = contents["url"]
+        #     return url
+        # return None
+        return self._get_duck()
 
     def _get_duck(self):
         api_url = "https://random-d.uk/api/v2/random"
