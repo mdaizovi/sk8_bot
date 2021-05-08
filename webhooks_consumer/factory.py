@@ -93,7 +93,7 @@ class GenericMessageFactory:
 
     def _get_taco(self):
         api_url = "http://taco-randomizer.herokuapp.com/random/"
-        contents = requests.get(api_url, timeout=10), .json()
+        contents = requests.get(api_url, timeout=10) .json()
         text = json.dumps(contents, indent=4, sort_keys=True)
         return text
 
