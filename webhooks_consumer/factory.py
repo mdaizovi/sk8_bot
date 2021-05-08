@@ -14,39 +14,49 @@ class GenericMessageFactory:
         # https://theysaidso.com/api/#
         # http://paperquotes.com/
 
+    def _get_api_response_or_none(self, url):
+        try:
+            response = requests.get(api_url, timeout=10)
+            contents = response.json()
+            return contents
+        except:
+            return
+
     def _get_compliment(self):
         api_url = "https://complimentr.com/api"
-        contents = requests.get(api_url, timeout=10).json()
-        compliment = contents["compliment"]
-        return compliment
+        contents = self._get_api_response_or_none(self, api_url)
+        if contents
+            compliment = contents["compliment"]
+            return compliment
+        return None
 
     def _get_doggo(self):
-        api_url = "https://random.dog/woof.json"
-        # raise JSONDecodeError("Expecting value", s, err.value) from None
-        #contents = requests.get(api_url).json()
-        
         # oh no! doggo is down!
-        # response = requests.get(api_url, timeout=10)
-        # if response:
-        #     contents = response.json()
-        #     if "url" in contnts:
-        #         url = contents["url"]
-        #         return url
-        return self._get_duck()
-
-
+        try:
+            api_url = "https://random.dog/woof.json"
+            contents = self._get_api_response_or_none(self, api_url)
+            if contents and "url" in contents:
+                url = contents["url"]
+                return url
+            return None
+        except:
+            return self._get_duck()
 
     def _get_duck(self):
         api_url = "https://random-d.uk/api/v2/random"
-        contents = requests.get(api_url, timeout=10).json()
-        url = contents["url"]
-        return url
+        contents = self._get_api_response_or_none(self, api_url)
+        if contents
+            url = contents["url"]
+            return url
+        return None
 
     def _get_sloth(self):
         api_url = "https://sloth.pics/api"
-        contents = requests.get(api_url, timeout=10).json()
-        url = contents["url"]
-        return url
+        contents = self._get_api_response_or_none(self, api_url)
+        if contents
+            url = contents["url"]
+            return url
+        return None
 
     # def _get_bunny(self):
     #     #TODO nevermind doesny work maybe with a hedless browesr
@@ -69,9 +79,11 @@ class GenericMessageFactory:
 
     def _get_kitty(self):
         api_url = "https://api.thecatapi.com/v1/images/search"
-        contents = requests.get(api_url, timeout=10).json()
-        url = contents[0]["url"]
-        return url
+        contents = self._get_api_response_or_none(self, api_url)
+        if contents
+            url = contents[0]["url"]
+            return url
+        return None
 
     def _get_pet(self):
         pet_function = random.choice([self._get_kitty, self._get_doggo])
@@ -80,9 +92,11 @@ class GenericMessageFactory:
 
     def _get_fox(self):
         api_url = "https://randomfox.ca/floof/"
-        contents = requests.get(api_url, timeout=10).json()
-        url = contents["image"]
-        return url
+        contents = self._get_api_response_or_none(self, api_url)
+        if contents
+            url = contents["image"]
+            return url
+        return None        
 
     def _get_insult(self):
         api_url = "https://autoinsult.com/index.php?style={}".format(random.randint(0,3))
@@ -93,9 +107,11 @@ class GenericMessageFactory:
 
     def _get_taco(self):
         api_url = "http://taco-randomizer.herokuapp.com/random/"
-        contents = requests.get(api_url, timeout=10) .json()
-        text = json.dumps(contents, indent=4, sort_keys=True)
-        return text
+        contents = self._get_api_response_or_none(self, api_url)
+        if contents
+            text = json.dumps(contents, indent=4, sort_keys=True)
+            return text
+        return None
 
     def _parse_telegram_message_obj(self):
         return self.request_json["message"]
