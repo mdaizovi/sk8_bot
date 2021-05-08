@@ -16,7 +16,7 @@ class GenericMessageFactory:
 
     def _get_compliment(self):
         api_url = "https://complimentr.com/api"
-        contents = requests.get(api_url).json()
+        contents = requests.get(api_url, timeout=10).json()
         compliment = contents["compliment"]
         return compliment
 
@@ -24,7 +24,7 @@ class GenericMessageFactory:
         api_url = "https://random.dog/woof.json"
         # raise JSONDecodeError("Expecting value", s, err.value) from None
         #contents = requests.get(api_url).json()
-        response = requests.get(api_url)
+        response = requests.get(api_url, timeout=10)
         if response:
             contents = response.json()
             if "url" in contnts:
@@ -33,13 +33,13 @@ class GenericMessageFactory:
 
     def _get_duck(self):
         api_url = "https://random-d.uk/api/v2/random"
-        contents = requests.get(api_url).json()
+        contents = requests.get(api_url, timeout=10).json()
         url = contents["url"]
         return url
 
     def _get_sloth(self):
         api_url = "https://sloth.pics/api"
-        contents = requests.get(api_url).json()
+        contents = requests.get(api_url, timeout=10).json()
         url = contents["url"]
         return url
 
@@ -64,7 +64,7 @@ class GenericMessageFactory:
 
     def _get_kitty(self):
         api_url = "https://api.thecatapi.com/v1/images/search"
-        contents = requests.get(api_url).json()
+        contents = requests.get(api_url, timeout=10).json()
         url = contents[0]["url"]
         return url
 
@@ -75,20 +75,20 @@ class GenericMessageFactory:
 
     def _get_fox(self):
         api_url = "https://randomfox.ca/floof/"
-        contents = requests.get(api_url).json()
+        contents = requests.get(api_url, timeout=10).json()
         url = contents["image"]
         return url
 
     def _get_insult(self):
         api_url = "https://autoinsult.com/index.php?style={}".format(random.randint(0,3))
-        contents = requests.get(api_url)
+        contents = requests.get(api_url, timeout=10)
         soup = BeautifulSoup(contents.content, 'html.parser')
         text = soup.find("div", {"id": "insult"}).getText()
         return text
 
     def _get_taco(self):
         api_url = "http://taco-randomizer.herokuapp.com/random/"
-        contents = requests.get(api_url).json()
+        contents = requests.get(api_url, timeout=10), .json()
         text = json.dumps(contents, indent=4, sort_keys=True)
         return text
 
