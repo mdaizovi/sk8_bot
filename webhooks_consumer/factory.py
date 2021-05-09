@@ -38,7 +38,13 @@ class GenericMessageFactory:
         #     url = contents["url"]
         #     return url
         # return None
-        return self._get_duck()
+
+        # Not as cute dog api
+        api_url = "https://dog.ceo/api/breeds/image/random"
+        contents = self._get_api_response_or_none(api_url)
+        if contents and "message" in contents:
+            url = contents["message"]
+            return url
 
     def _get_duck(self):
         api_url = "https://random-d.uk/api/v2/random"
