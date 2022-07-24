@@ -5,10 +5,14 @@ It is a built with the [Django web framework](https://www.djangoproject.com/) in
 
 ## How to Contribute
 
-This is an open source project. Please continue this README to get set your local env set up, 
-fork this repo, and then make pull requests from your fork of this repo.
+This is an open source project. Please continue this README to get set your local env set up. 
+You can then contribute in one of 2 ways:
+
+ - Fork this repo, and then make pull requests from your fork of this repo.
+ - Clone this repo and make Merge Requests from a feature branch.
+ 
 New features will only be accepted if they include adequate tests, and testing instructions for QA. 
-Everything will be formatted by Black before being merged.
+Everything will be formatted by Black before being merged (I'll take care of that, don't worry).
 
 
 ## Set Up Your Local Development Environment
