@@ -132,6 +132,7 @@ The tests often work and sometimes don't. Adequate testing is a work in progress
       `pytest "-s" --reuse-db`
 
 
+
 # How Does it Work?
 ## How Messages are Received
 Posting messages works both from a Telegram chat as well as form the CiB Slack workspace. 
@@ -143,7 +144,6 @@ I bet you can guess which one handles which.
 
 For Telegram, every time a message is posted in a group that the skatebot is in, that message gets sent to this backend as JSON, looking something like this:
 ```
-yaml
 {
 {'update_id': 944746271, 
  'message': {
