@@ -131,6 +131,62 @@ The tests often work and sometimes don't. Adequate testing is a work in progress
   
       `pytest "-s" --reuse-db`
 
+
+# How Does it Work?
+## How Messages are Received
+Posting messages works both from a Telegram chat as well as form the CiB Slack workspace. 
+In `sk8_bot/webhooks_consumer/views.py `, there are 2 classes:
+ - TelegramBotView
+ - SlackBotView
+
+I bet you can guess which one handles which.
+
+For Telegram, every time a message is posted in a group that the skatebot is in, that message gets sent to this backend as JSON, looking something like this:
+```
+yaml
+{
+{'update_id': 944746271, 
+ 'message': {
+   'message_id': 32726, 
+   'from': 
+     {'id': 531519657, 'is_bot': False, 'first_name': 'SABA', 'username': 'SABAloops'
+     }, 
+   'chat': {
+     'id': -1001258758865, 'title': 'Berlin Quadsk8ing on Ramps/Bowls/Skateparks Chatter', 'type': 'supergroup'
+     },
+   'date': 1658575957, 'text': 'Who is in the parade?! :) we’re coming!! :)'
+   }
+  }
+}
+```
+
+In TelegramBotView there is a function called `post`, which parses this json. It checks to see if the message contains a command (if it starts with a /) and of so, if takes the word (for example, "/sk8") and checks the database to see if there is a saved commant for that command and chat combination. This will be explained a little more below, in **Database Models**.
+
+In `sk8_bot/webhooks_consumer/factory.py` you'll see several simple functions, like 
+  - `_get_compliment`
+  - `_get_doggo`
+ etc
+Those are the functions that dictate what happens for theirnrespective commands that trigger them. Sk8 is not there because all it does is take input and put it somewhere else, which willl make more sense in **Database Models**. Thwe only thing from "/sk8" command tha rtis in this file is the function `_get_broadcast_message`, which formates the message posted to the skate bulletin and CiB slack. 
+
+## Database Models
+In `sk8_bot/webhooks_consumer/models.py` there are definitions of the database models (aka tables).
+
+`InputSource` is where the messages come from, such as a Telegram chat or Slack channel.
+`OutputChannel`Is the same, but they are generally different Telegram chats/Slack channels.
+
+For example, for a /sk8 bulletin to go from the "Berlin Quadsk8ing on Ramps/Bowls/Skateparks Chatter" to the CiB slack channel and skate bulletin channel, the chat where the message originated is the InputSource`, then the Slack channel and Sk8Date Bulletin are both `OutputChannel`. Because something (pictures of dogs, cats, or sloths) gets posted back to the "Berlin Quadsk8ing on Ramps/Bowls/Skateparks Chatter", it is also an `OutputChannel`. The "Berlin Skate Crew" chat doesn't get animal pictures, so it is not an `OutputChannel`, just an `InputSource`.
+
+`BotOutput` is what the Bot actually returns. For exmample, for the simple command `/doggo` that returns a picture of a dog in "Berlin Quadsk8ing on Ramps/Bowls/Skateparks Chatter", it looks like this:
+ - `output_function` is `_get_doggo`
+ - `output_platform` is Telegram
+ -  `output_channel` is the same chat the command came from, "Berlin Quadsk8ing on Ramps/Bowls/Skateparks Chatter"
+
+`BotAction` brings this all together.
+ - `command` the actual text that triggers this sequence, like "sk8" or "doggo"
+ - `content_required` True or False of whether content is required. For example, /sk8 requires text or else it does nothing, but doggo doesn't.
+ - `output`is an instance of `BotOutput` 
+
+
 ## FAQ
 
 ### Everything should work locally but it doesn't. Why?
