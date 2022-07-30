@@ -8,11 +8,11 @@ It is a built with the [Django web framework](https://www.djangoproject.com/) in
 This is an open source project. Please continue this README to get set your local env set up. 
 You can then contribute in one of 2 ways:
 
- - Fork this repo, and then make pull requests from your fork of this repo.
- - Clone this repo and make Merge Requests from a feature branch.
+ - [Fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/about-forks) this repo, and then make [Pull Requests](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests#:~:text=Pull%20requests%20let%20you%20tell,merged%20into%20the%20base%20branch.) from your fork of this repo.
+ - [Clone](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository#:~:text=When%20you%20clone%20a%20repository,and%20folder%20for%20the%20project.) this repo and make [Merge Requests](https://stackoverflow.com/questions/23076923/what-is-a-merge-request) from a [feature branch](https://www.atlassian.com/git/tutorials/comparing-workflows/feature-branch-workflow).
  
-New features will only be accepted if they include adequate tests, and testing instructions for QA. 
-Everything will be formatted by Black before being merged (I'll take care of that, don't worry).
+New features will only be accepted if they include adequate tests, and testing instructions for QA *(ie tell me what you did and how it should work so I can test it)*. 
+Everything will be formatted by Black before being merged *(I'll take care of that, don't worry)*.
 
 
 ## Set Up Your Local Development Environment
@@ -28,7 +28,7 @@ From here, `words that looks like this` are commands you are meant to type somew
     
     `git clone https://github.com/mdaizovi/sk8_bot`
     
- - `cd sk8_bot` into repo
+ - `cd sk8_bot` to get into repo. `cd` is how you change folders from the command line.
  
  - Make a Virtual Environment:
   
@@ -53,7 +53,7 @@ From here, `words that looks like this` are commands you are meant to type somew
   
     `python manage.py createsuperuser`
 
-  - You will be prompted by Django to create a super user, and you can use these credentials to log into the admin interface (more on that later)
+  - You will be prompted by Django to create a super user, and you can use these credentials to log into the admin interface (more on that later. We're going to take a pause on this subject here and come back to it.)
 
  - Get a Telegram API ID and Save Credenitals
     - Get a Telegram API ID [here](https://my.telegram.org/auth)
@@ -79,7 +79,7 @@ From here, `words that looks like this` are commands you are meant to type somew
         
         `Disable`
         
-    - While still logged in to your Test account, create a group chat and a channel. Add you bot to both, and make the Bot an admin of the channel. 
+    - While still logged in to your Test account, create a group chat and a channel. Add your bot to both, and make the Bot an admin of the channel. 
          
   - Create a Test Group and Channel for your Test Bot and save the chat ids in the database 
      - Set up Telegram webhooks to your local instance with the following command,
