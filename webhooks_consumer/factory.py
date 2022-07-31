@@ -6,8 +6,9 @@ from slackclient import SlackClient
 
 from django.conf import settings
 
+
 class GenericMessageFactory:
-    def __init__(self,request_json):
+    def __init__(self, request_json):
         self.request_json = request_json
         # APIS to look into lateR:
         # https://favqs.com/api
@@ -62,24 +63,13 @@ class GenericMessageFactory:
             return url
         return None
 
-    # def _get_bunny(self):
-    #     #TODO nevermind doesny work maybe with a hedless browesr
-    #     # numbers between 1-63 seem to work
-    #     bunny_id = random.randint(1,163)
-    #     # https://bunnies.media/webm/163.webm
-    #     api_url = "https://www.bunnies.io/#{}".format(bunny_id)
-    #     # numbers between 1-363 seem to work
-    #     contents = requests.get(api_url)
-    #     soup = BeautifulSoup(contents.content, 'html.parser')
-    #     videos = soup.findAll('video')
-    #     if len(videos) > 1:
-    #         video = videos[1]
-    #         source = video.find('source')
-    #         if source:
-    #             src = source['src']
-    #             if src:
-    #                 return src
-    #     # if something goes wrong just return a duck
+    def _get_bootie(self):
+        sayings = [
+            "Jesus titty fucking Christ!",
+            "Fuck me dead and bury me pregnant!",
+            "Fuck MY DAD and bury me pregnant"
+        ]
+        return random.choice(sayings)
 
     def _get_kitty(self):
         api_url = "https://api.thecatapi.com/v1/images/search"
@@ -100,10 +90,11 @@ class GenericMessageFactory:
         if contents:
             url = contents["image"]
             return url
-        return None        
+        return None
 
     def _get_insult(self):
-        api_url = "https://autoinsult.com/index.php?style={}".format(random.randint(0,3))
+        api_url = "https://autoinsult.com/index.php?style={}".format(
+            random.randint(0, 3))
         contents = requests.get(api_url, timeout=10)
         soup = BeautifulSoup(contents.content, 'html.parser')
         text = soup.find("div", {"id": "insult"}).getText()
@@ -153,7 +144,8 @@ class GenericMessageFactory:
                 return command_content
         else:
             raise ValueError(
-                "{} not in {}; wrong method called".format(command_str, msg_str)
+                "{} not in {}; wrong method called".format(
+                    command_str, msg_str)
             )
 
     def _get_broadcast_message(self):
@@ -166,10 +158,11 @@ class GenericMessageFactory:
             platform = "Telegram"
             try:
                 # so terrible, but circular import issue.
-                # or, try to get a more specific channel nickname 
+                # or, try to get a more specific channel nickname
                 chat_id = self._parse_telegram_chat_id()
                 if chat_id:
-                    nicknames = {-1001258758865:"\U0001f6fc", -1001343931693:"⛸"}
+                    nicknames = {-1001258758865: "\U0001f6fc", -
+                                 1001343931693: "⛸"}
                     nickname = nicknames.get(chat_id)
                     if nickname:
                         platform = nickname
@@ -180,12 +173,11 @@ class GenericMessageFactory:
             platform = "Slack"
             message_text = self._parse_slack_command_message_string()
             sender = self._parse_slack_sender_string()
-            
+
         broadcast_msg = "{} on {}: {}".format(
             sender if sender else "", platform, message_text
         )
         return broadcast_msg
-
 
     def _send_output(self):
         raise NotImplementedError(
@@ -195,26 +187,29 @@ class GenericMessageFactory:
         )
 
 
-
 class TelegramMessageFactory(GenericMessageFactory):
-    
+
     def __init__(self, request_json):
         super().__init__(request_json)
 
     def _build_url(self, api_action):
-        url = "https://api.telegram.org/bot{}/{}".format(settings.TELEGRAM_BOT_TOKEN, api_action)
+        url = "https://api.telegram.org/bot{}/{}".format(
+            settings.TELEGRAM_BOT_TOKEN, api_action)
         return url
 
     def _send_output(self, output_target, output_content):
-        has_image_extension = [True for ext in ["jpg", "jpeg", "png", "gif", "mp4", "webm"] if output_content.lower().endswith(".{}".format(ext))]
-        if "http" in output_content and any(has_image_extension): # it's a photo 
+        has_image_extension = [True for ext in ["jpg", "jpeg", "png", "gif",
+                                                "mp4", "webm"] if output_content.lower().endswith(".{}".format(ext))]
+        # it's a photo
+        if "http" in output_content and any(has_image_extension):
             data = {"chat_id": output_target, "photo": output_content}
             requests.post(self._build_url(api_action="sendPhoto"), data=data)
         else:
-            data = {"chat_id": output_target, "text": output_content, "parse_mode": "Markdown"}
+            data = {"chat_id": output_target,
+                    "text": output_content, "parse_mode": "Markdown"}
             requests.post(self._build_url(api_action="sendMessage"), data=data)
-            
-            
+
+
 class SlackMessageFactory(GenericMessageFactory):
 
     def __init__(self, request_json):
@@ -225,4 +220,3 @@ class SlackMessageFactory(GenericMessageFactory):
         response = slack_client.api_call(
             "chat.postMessage", channel=output_target, text=output_content
         )
-
