@@ -53,7 +53,11 @@ From here, `words that looks like this` are commands you are meant to type somew
   
     `python manage.py createsuperuser`
 
-  - You will be prompted by Django to create a super user, and you can use these credentials to log into the admin interface (more on that later. We're going to take a pause on this subject here and come back to it.)
+  - You will be prompted by Django to create a super user, and you can use these credentials to log into the Admin interface (more on that later. We're going to take a pause on this subject here and come back to it.)
+
+- Import starter data into the database:
+  
+    `python manage.py loaddata fixtures/db.json`
 
  - Get a Telegram API ID and Save Credenitals
     - Get a Telegram API ID [here](https://my.telegram.org/auth)
@@ -93,8 +97,8 @@ From here, `words that looks like this` are commands you are meant to type somew
       
         `python manage.py runserver`
 
-    - TODO how to get IDS and put in admin.
-
+  - Navigate to the Admin by typing "http://127.0.0.1:8000/admin/" into your browser. On the login screen, enter the username and password you made awhile go, when you typed  `python manage.py createsuperuser` *(I told you we'd come back to this.)*
+  - Go to "http://127.0.0.1:8000/admin/webhooks_consumer/inputsource/". These are your input sources; basically conversatinos where the bot commands come from. TODO GET ID AND PUT HERE, ALSO FOR OUTPUT. THEN TEST.
 
 
 ## Running Your Local Development Environment While You Work
