@@ -4,6 +4,7 @@ import requests
 from bs4 import BeautifulSoup
 from slackclient import SlackClient
 
+from django.apps import apps
 from django.conf import settings
 
 
@@ -149,7 +150,7 @@ class GenericMessageFactory:
             )
 
     def _get_broadcast_message(self):
-        # message string may come from Telegram or Slack. Decide which it is and parse accodringly.
+        # message string may come from Telegram or Slack. Decide which it is and parse accordingly.
         if set(dict(self.request_json).keys()) == set(['update_id', 'message']):
             # Telegram json
             message_list = self._parse_telegram_message_string().split()
@@ -157,15 +158,17 @@ class GenericMessageFactory:
             sender = self._parse_telegram_sender_string()
             platform = "Telegram"
             try:
-                # so terrible, but circular import issue.
-                # or, try to get a more specific channel nickname
                 chat_id = self._parse_telegram_chat_id()
                 if chat_id:
-                    nicknames = {-1001258758865: "\U0001f6fc", -
-                                 1001343931693: "⛸"}
-                    nickname = nicknames.get(chat_id)
-                    if nickname:
-                        platform = nickname
+                    # Getting around circular import issue, bc I import from .factory in .model_choices and then import .model_choices in .models
+                    InputSource = apps.get_model(
+                        "webhooks_consumer.InputSource")
+                    telegram_input = InputSource.objects.get(chat_id=chat_id)
+                    if telegram_input:
+                        if telegram_input.nickname_public:
+                            platform = telegram_input.nickname_public
+                        else:
+                            platform = telegram_input.platform  # Should be Telegram
             except:
                 pass
         else:

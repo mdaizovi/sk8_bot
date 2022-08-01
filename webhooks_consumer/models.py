@@ -1,8 +1,5 @@
-import requests
-
 from django.db import models
 from django.conf import settings
-from django.core.exceptions import ValidationError
 
 from .model_choices import PlatformChoices, FunctionChoices, EnvChoices
 
@@ -10,7 +7,7 @@ from .model_choices import PlatformChoices, FunctionChoices, EnvChoices
 class InputSource(models.Model):
     name = models.CharField(max_length=100, null=True, blank=True)
     nickname_public = models.CharField(max_length=10, null=True, blank=True,
-                                       help_text="nickname for bulletins. ex: 'nic on BSC', with BSC insread of Telegram")
+                                       help_text="nickname for bulletins. ex: 'nic on BSC', with BSC instead of Telegram")
     chat_id = models.CharField(max_length=100, db_index=True,
                                help_text="Might be Telegram group chat_id, might be Slack team_id")
     platform = models.CharField(
