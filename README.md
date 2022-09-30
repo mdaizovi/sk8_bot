@@ -71,11 +71,8 @@ From here, `words that looks like this` are commands you are meant to type somew
         `nano sk8_bot/.env` into the terminal, or by using an IDE, like PyCharm, what will show it in the directory.
         Don't forget to save your changes!
         
- - Create a Test Account on the Telegram Test Server 
-    - Make an account for yourself on Telegram's Test server by following [these instructions](https://medium.com/@blueset/how-to-write-integration-tests-for-a-telegram-bot-1a23-blog-a82960d7d3ce#a39e).
-    
- - Create Your Own Test Bot on the Telegram Test Server 
-    - While logged in to your test account on Telegram, [make a bot](https://medium.com/shibinco/create-a-telegram-bot-using-botfather-and-get-the-api-token-900ba00e0f39)
+ - Create Your Own Test instance of the Bot 
+    - While logged in to your account on Telegram, [make a bot](https://medium.com/shibinco/create-a-telegram-bot-using-botfather-and-get-the-api-token-900ba00e0f39)
     - BotFather will give you an API Key. Put that in your .env file under TELEGRAM_BOT_TOKEN
     - Set the privacy of your Bot so it can read chat messages. To do this, in your conversation with BotFather type
     
@@ -85,7 +82,11 @@ From here, `words that looks like this` are commands you are meant to type somew
         
         `Disable`
         
-    - While still logged in to your Test account, create a group chat and a channel. Add your bot to both, and make the Bot an admin of the channel. 
+    - Create a group chat and a channel. Add your bot to both, and make the Bot an admin of the channel. 
+         
+  - Run ngrok by opening another terminal and navigating in the terminal to the directory where you installed it, and typing:
+  
+    `./ngrok http 8000`
          
   - Create a Test Group and Channel for your Test Bot and save the chat ids in the database 
      - Set up Telegram webhooks to your local instance with the following command,
