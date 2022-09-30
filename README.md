@@ -24,7 +24,7 @@ From here, `words that looks like this` are commands you are meant to type somew
  - Install ngrok on your local machine
     - Google it or go [here](https://ngrok.com/).
     
-    **NOTE** this installa tion will only work on a mac >= 10.13, and on a mac, for me it was easier to install with `brew install ngrok --cask` and then [follow these instructions](https://dashboard.ngrok.com/get-started/setup) to conect my account.
+    **NOTE** this installation will only work on a mac >= 10.13, and on a mac, for me it was easier to install with `brew install ngrok/ngrok/ngrok` and then [follow these instructions](https://dashboard.ngrok.com/get-started/setup) to conect my account.
 
  - From the terminal navigate to the directory you want this code to live and clone this repo by typing the following into a terminal:
     
