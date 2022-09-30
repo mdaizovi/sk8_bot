@@ -11,7 +11,7 @@ You can then contribute in one of 2 ways:
  - [Fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/about-forks) this repo, and then make [Pull Requests](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests#:~:text=Pull%20requests%20let%20you%20tell,merged%20into%20the%20base%20branch.) from your fork of this repo.
  - [Clone](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository#:~:text=When%20you%20clone%20a%20repository,and%20folder%20for%20the%20project.) this repo and make [Merge Requests](https://stackoverflow.com/questions/23076923/what-is-a-merge-request) from a [feature branch](https://www.atlassian.com/git/tutorials/comparing-workflows/feature-branch-workflow).
  
-New features will only be accepted if they include adequate tests, and testing instructions for QA *(ie tell me what you did and how it should work so I can test it)*. 
+New features will only be accepted if they include ~~adequate tests, and~~ testing instructions for QA *(ie tell me what you did and how it should work so I can test it)*. 
 Everything will be formatted by Black before being merged *(I'll take care of that, don't worry)*.
 
 
@@ -23,6 +23,7 @@ From here, `words that looks like this` are commands you are meant to type somew
 
  - Install ngrok on your local machine
     - Google it or go [here](https://ngrok.com/).
+    **NOTE** on a mac, for me it was easier to install with `brew install ngrok --cask` and then [follow these instructions](https://dashboard.ngrok.com/get-started/setup) to conect my account.
 
  - From the terminal navigate to the directory you want this code to live and clone this repo by typing the following into a terminal:
     
