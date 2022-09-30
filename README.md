@@ -32,6 +32,9 @@ From here, `words that looks like this` are commands you are meant to type somew
     
  - `cd sk8_bot` to get into repo. `cd` is how you change folders from the command line.
  
+ -  Copy `sk8_bot/.env.example` to `.env`. 
+   You can do this by typing `cp sk8_bot/.env.example sk8_bot/.env` in the terminal.
+    
  - Make a Virtual Environment:
   
     `python -m venv venv`
@@ -39,9 +42,6 @@ From here, `words that looks like this` are commands you are meant to type somew
  - Activate virtual environment:
   
     `source venv/bin/activate`
-
- -  Copy `sk8_bot/.env.example` to `.env`. 
-    You can do this by typing `cp sk8_bot/.env.example sk8_bot/.env` in the terminal.
 
  - Install backend requirements (make sure you are in your virtual environment first):
   
