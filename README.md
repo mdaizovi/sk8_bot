@@ -69,7 +69,7 @@ From here, `words that looks like this` are commands you are meant to type somew
         Put those in the .env file that you copied. Replace "dummy" for TELEGRAM_APP_API_ID and TELEGRAM_APP_API_HASH with your new api_id and api_hash.
         Depending on your system, you might not be able to see the .env file. You will still be able to access it by typing
         `nano sk8_bot/.env` into the terminal, or by using an IDE, like PyCharm, what will show it in the directory.
-        Don't forget to save your changes!
+        Don't forget to save your changes! Note, nano is a pain in the ass to exitm you need to Ctrl+X
         
  - Create Your Own Test instance of the Bot 
     - While logged in to your account on Telegram, [make a bot](https://medium.com/shibinco/create-a-telegram-bot-using-botfather-and-get-the-api-token-900ba00e0f39)
@@ -84,10 +84,14 @@ From here, `words that looks like this` are commands you are meant to type somew
         
     - Create a group chat and a channel. Add your bot to both, and make the Bot an admin of the channel. 
       
-  - Run ngrok by opening another terminal and navigating in the terminal to the directory where you installed it, and typing:
+  - Run ngrok by opening another terminal and typing:
   
-    `./ngrok http 8000`
-         
+    `ngrok http 8000`
+     
+     - If you're on Windows you may need to navigate in the terminal to the directory where you installed it, and typing:
+  
+      `./ngrok http 8000`
+     
   - Create a Test Group and Channel for your Test Bot and save the chat ids in the database 
      - Set up Telegram webhooks to your local instance with the following command,
      replacing "<web_hook_address>" with the Forwarding address in the ngrok terminal
@@ -99,10 +103,24 @@ From here, `words that looks like this` are commands you are meant to type somew
       - Run the Django server: 
       
         `python manage.py runserver`
+ 
+
+     - Go back to the conversation you made with your bot. Say something. Afterwards, you should see a message in the terminal that looks something like:
+
+       ```
+       {'update_id': 506937115, 'message': {'message_id': 2, 'from': {'id': 5459064228, 'is_bot': False, 'first_name': 'Mic', 'last_name': 'Test'}, 'chat': {'id': -800841577, 'title': 'Test Bot Chat', 'type': 'group', 'all_members_are_administrators': True}, 'date': 1664634193, 'text': 'Test comment'}}
+       ```
 
      - Navigate to the Admin by typing [http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/) into your browser. On the login screen, enter the username and password you made awhile go, when you typed  `python manage.py createsuperuser` *(I told you we'd come back to this.)*
-   
-     - Go to [http://127.0.0.1:8000/admin/webhooks_consumer/inputsource/](http://127.0.0.1:8000/admin/webhooks_consumer/inputsource/). These are your input sources; basically conversations where the bot commands come from. TODO GET ID AND PUT HERE, ALSO FOR OUTPUT. THEN TEST.
+
+
+     - Go to [http://127.0.0.1:8000/admin/webhooks_consumer/inputsource/](http://127.0.0.1:8000/admin/webhooks_consumer/inputsource/). These are your input sources; basically conversations where the bot commands come from. Click on the one named "Bot Convo". Change its chat ID to whatever `chat id` you see in your local terminal.
+     ```...  'chat': {'id': -800841577, ... ```
+     
+     - Do the same for the channel. Make a test comment in the channel. Then navigate to the [OutputChannels](http://127.0.0.1:8000/admin/webhooks_consumer/outputchannel/) in the admin. Select the "Sk8Dates" one and replace its  "Channel id" with what you see in your terminal under `chat id`
+          ```...  'chat': {'id': -1001845844181, ... ```
+     
+     - You're finally done with setup! Go to the first conversation and type in your favorite command. /doggo, /kitty, etc.
 
 ## Running Your Local Development Environment While You Work
    - Run ngrok by navigating in the terminal to the directory where you installed it, and typing:
@@ -123,21 +141,6 @@ From here, `words that looks like this` are commands you are meant to type somew
  - Run the local django server
   
     `python manage.py runserver`
-
-## Running the tests
-The tests often work and sometimes don't. Adequate testing is a work in progress.
-
-
-- In one terminal, run ngrok 
-    `./ngrok http 8000 `
-- In another terminal:
-  - Activate your virtual environment:
-    
-    `source venv/bin/activate`
-  - Run pytest: 
-  
-      `pytest "-s" --reuse-db`
-
 
 
 # How Does it Work?
