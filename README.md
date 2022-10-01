@@ -84,10 +84,6 @@ From here, `words that looks like this` are commands you are meant to type somew
         
     - Create a group chat and a channel. Add your bot to both, and make the Bot an admin of the channel. 
       
- - Navigate to the Admin by typing [http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/) into your browser. On the login screen, enter the username and password you made awhile go, when you typed  `python manage.py createsuperuser` *(I told you we'd come back to this.)*
-   
- - Go to [http://127.0.0.1:8000/admin/webhooks_consumer/inputsource/](http://127.0.0.1:8000/admin/webhooks_consumer/inputsource/). These are your input sources; basically conversations where the bot commands come from. TODO GET ID AND PUT HERE, ALSO FOR OUTPUT. THEN TEST.
-      
   - Run ngrok by opening another terminal and navigating in the terminal to the directory where you installed it, and typing:
   
     `./ngrok http 8000`
@@ -104,6 +100,9 @@ From here, `words that looks like this` are commands you are meant to type somew
       
         `python manage.py runserver`
 
+     - Navigate to the Admin by typing [http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/) into your browser. On the login screen, enter the username and password you made awhile go, when you typed  `python manage.py createsuperuser` *(I told you we'd come back to this.)*
+   
+     - Go to [http://127.0.0.1:8000/admin/webhooks_consumer/inputsource/](http://127.0.0.1:8000/admin/webhooks_consumer/inputsource/). These are your input sources; basically conversations where the bot commands come from. TODO GET ID AND PUT HERE, ALSO FOR OUTPUT. THEN TEST.
 
 ## Running Your Local Development Environment While You Work
    - Run ngrok by navigating in the terminal to the directory where you installed it, and typing:
