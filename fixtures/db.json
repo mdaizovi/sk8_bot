@@ -17,77 +17,6 @@
     }
 },
 {
-    "model": "webhooks_consumer.inputsource",
-    "pk": 2,
-    "fields": {
-        "name": "Bot Convo",
-        "nickname_public": null,
-        "chat_id": "649679",
-        "platform": "TLGRM",
-        "enviro": "D",
-        "actions": [
-            2,
-            3,
-            8
-        ]
-    }
-},
-{
-    "model": "webhooks_consumer.inputsource",
-    "pk": 3,
-    "fields": {
-        "name": "Chatter Group",
-        "nickname_public": null,
-        "chat_id": "-1001258758865",
-        "platform": "TLGRM",
-        "enviro": "P",
-        "actions": [
-            2,
-            3,
-            6
-        ]
-    }
-},
-{
-    "model": "webhooks_consumer.inputsource",
-    "pk": 4,
-    "fields": {
-        "name": "Bot Convo",
-        "nickname_public": null,
-        "chat_id": "962839402",
-        "platform": "TLGRM",
-        "enviro": "P",
-        "actions": [
-            2,
-            3
-        ]
-    }
-},
-{
-    "model": "webhooks_consumer.inputsource",
-    "pk": 7,
-    "fields": {
-        "name": "Slack, any channel/chat",
-        "nickname_public": null,
-        "chat_id": "T08V95GH0",
-        "platform": "SLCK",
-        "enviro": "P",
-        "actions": [
-            6
-        ]
-    }
-},
-{
-    "model": "webhooks_consumer.outputchannel",
-    "pk": 1,
-    "fields": {
-        "name": "Sk8Dates",
-        "channel_id": "-1001313300758",
-        "platform": "TLGRM",
-        "enviro": "P"
-    }
-},
-{
     "model": "webhooks_consumer.outputchannel",
     "pk": 2,
     "fields": {
@@ -105,16 +34,6 @@
         "channel_id": "bot-test",
         "platform": "SLCK",
         "enviro": "D"
-    }
-},
-{
-    "model": "webhooks_consumer.outputchannel",
-    "pk": 6,
-    "fields": {
-        "name": "Cib Slack",
-        "channel_id": "cib-skatedates",
-        "platform": "SLCK",
-        "enviro": "P"
     }
 },
 {
@@ -169,24 +88,6 @@
         "output_function": "fox",
         "output_platform": "TLGRM",
         "output_channel": null
-    }
-},
-{
-    "model": "webhooks_consumer.botoutput",
-    "pk": 9,
-    "fields": {
-        "output_function": "broadcast_message",
-        "output_platform": "SLCK",
-        "output_channel": 6
-    }
-},
-{
-    "model": "webhooks_consumer.botoutput",
-    "pk": 10,
-    "fields": {
-        "output_function": "broadcast_message",
-        "output_platform": "TLGRM",
-        "output_channel": 1
     }
 },
 {
@@ -264,8 +165,7 @@
         "command": "sk8",
         "content_required": true,
         "output": [
-            9,
-            10
+            9
         ]
     }
 },
@@ -277,8 +177,7 @@
         "content_required": true,
         "output": [
             6,
-            9,
-            10
+            9
         ]
     }
 },
