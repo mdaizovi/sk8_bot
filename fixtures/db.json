@@ -1,195 +1,139 @@
 [
 {
-    "model": "webhooks_consumer.inputsource",
-    "pk": 1,
-    "fields": {
-        "name": "Chatter Group",
-        "nickname_public": null,
-        "chat_id": "-384789",
-        "platform": "TLGRM",
-        "enviro": "D",
-        "actions": [
-            1,
-            2,
-            3,
-            8
-        ]
-    }
+  "model": "webhooks_consumer.inputsource",
+  "pk": 1,
+  "fields": {
+    "name": "Chatter Group",
+    "nickname_public": null,
+    "chat_id": "XXXXX",
+    "platform": "TLGRM",
+    "enviro": "D",
+    "actions": [
+      1,
+      2,
+      3,
+      8
+    ]
+  }
 },
 {
-    "model": "webhooks_consumer.outputchannel",
-    "pk": 2,
-    "fields": {
-        "name": "Sk8Dates",
-        "channel_id": "-1000010577443",
-        "platform": "TLGRM",
-        "enviro": "D"
-    }
+  "model": "webhooks_consumer.outputchannel",
+  "pk": 2,
+  "fields": {
+    "name": "Sk8Dates",
+    "channel_id": "-00000000XXXXX",
+    "platform": "TLGRM",
+    "enviro": "D"
+  }
 },
 {
-    "model": "webhooks_consumer.outputchannel",
-    "pk": 5,
-    "fields": {
-        "name": "CiB Slack",
-        "channel_id": "bot-test",
-        "platform": "SLCK",
-        "enviro": "D"
-    }
+  "model": "webhooks_consumer.botoutput",
+  "pk": 1,
+  "fields": {
+    "output_function": "broadcast_message",
+    "output_platform": "TLGRM",
+    "output_channel": 2
+  }
 },
 {
-    "model": "webhooks_consumer.botoutput",
-    "pk": 1,
-    "fields": {
-        "output_function": "broadcast_message",
-        "output_platform": "TLGRM",
-        "output_channel": 2
-    }
+  "model": "webhooks_consumer.botoutput",
+  "pk": 3,
+  "fields": {
+    "output_function": "pet",
+    "output_platform": "TLGRM",
+    "output_channel": null
+  }
 },
 {
-    "model": "webhooks_consumer.botoutput",
-    "pk": 2,
-    "fields": {
-        "output_function": "broadcast_message",
-        "output_platform": "SLCK",
-        "output_channel": 5
-    }
+  "model": "webhooks_consumer.botoutput",
+  "pk": 4,
+  "fields": {
+    "output_function": "doggo",
+    "output_platform": "TLGRM",
+    "output_channel": null
+  }
 },
 {
-    "model": "webhooks_consumer.botoutput",
-    "pk": 3,
-    "fields": {
-        "output_function": "pet",
-        "output_platform": "TLGRM",
-        "output_channel": null
-    }
+  "model": "webhooks_consumer.botoutput",
+  "pk": 5,
+  "fields": {
+    "output_function": "kitty",
+    "output_platform": "TLGRM",
+    "output_channel": null
+  }
 },
 {
-    "model": "webhooks_consumer.botoutput",
-    "pk": 4,
-    "fields": {
-        "output_function": "doggo",
-        "output_platform": "TLGRM",
-        "output_channel": null
-    }
+  "model": "webhooks_consumer.botoutput",
+  "pk": 6,
+  "fields": {
+    "output_function": "fox",
+    "output_platform": "TLGRM",
+    "output_channel": null
+  }
 },
 {
-    "model": "webhooks_consumer.botoutput",
-    "pk": 5,
-    "fields": {
-        "output_function": "kitty",
-        "output_platform": "TLGRM",
-        "output_channel": null
-    }
+  "model": "webhooks_consumer.botoutput",
+  "pk": 11,
+  "fields": {
+    "output_function": "bootie",
+    "output_platform": "TLGRM",
+    "output_channel": null
+  }
 },
 {
-    "model": "webhooks_consumer.botoutput",
-    "pk": 6,
-    "fields": {
-        "output_function": "fox",
-        "output_platform": "TLGRM",
-        "output_channel": null
-    }
+  "model": "webhooks_consumer.botaction",
+  "pk": 1,
+  "fields": {
+    "command": "sk8",
+    "content_required": true,
+    "output": [
+      1,
+      3
+    ]
+  }
 },
 {
-    "model": "webhooks_consumer.botoutput",
-    "pk": 11,
-    "fields": {
-        "output_function": "bootie",
-        "output_platform": "TLGRM",
-        "output_channel": null
-    }
+  "model": "webhooks_consumer.botaction",
+  "pk": 2,
+  "fields": {
+    "command": "doggo",
+    "content_required": false,
+    "output": [
+      4
+    ]
+  }
 },
 {
-    "model": "webhooks_consumer.botaction",
-    "pk": 1,
-    "fields": {
-        "command": "sk8",
-        "content_required": true,
-        "output": [
-            1,
-            2,
-            3
-        ]
-    }
+  "model": "webhooks_consumer.botaction",
+  "pk": 3,
+  "fields": {
+    "command": "kitty",
+    "content_required": false,
+    "output": [
+      5
+    ]
+  }
 },
 {
-    "model": "webhooks_consumer.botaction",
-    "pk": 2,
-    "fields": {
-        "command": "doggo",
-        "content_required": false,
-        "output": [
-            4
-        ]
-    }
+  "model": "webhooks_consumer.botaction",
+  "pk": 4,
+  "fields": {
+    "command": "foxy",
+    "content_required": false,
+    "output": [
+      6
+    ]
+  }
 },
 {
-    "model": "webhooks_consumer.botaction",
-    "pk": 3,
-    "fields": {
-        "command": "kitty",
-        "content_required": false,
-        "output": [
-            5
-        ]
-    }
-},
-{
-    "model": "webhooks_consumer.botaction",
-    "pk": 4,
-    "fields": {
-        "command": "foxy",
-        "content_required": false,
-        "output": [
-            6
-        ]
-    }
-},
-{
-    "model": "webhooks_consumer.botaction",
-    "pk": 5,
-    "fields": {
-        "command": "sk8",
-        "content_required": false,
-        "output": [
-            1,
-            2,
-            6
-        ]
-    }
-},
-{
-    "model": "webhooks_consumer.botaction",
-    "pk": 6,
-    "fields": {
-        "command": "sk8",
-        "content_required": true,
-        "output": [
-            9
-        ]
-    }
-},
-{
-    "model": "webhooks_consumer.botaction",
-    "pk": 7,
-    "fields": {
-        "command": "sk8",
-        "content_required": true,
-        "output": [
-            6,
-            9
-        ]
-    }
-},
-{
-    "model": "webhooks_consumer.botaction",
-    "pk": 8,
-    "fields": {
-        "command": "bootie",
-        "content_required": false,
-        "output": [
-            11
-        ]
-    }
+  "model": "webhooks_consumer.botaction",
+  "pk": 8,
+  "fields": {
+    "command": "bootie",
+    "content_required": false,
+    "output": [
+      11
+    ]
+  }
 }
 ]
