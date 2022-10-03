@@ -50,7 +50,7 @@ From here, `words that looks like this` are commands you are meant to type somew
      - To see your virtual environments you can do `pyenv virtualenvs` and you should see the environment you just made.
      - If that doesn't work you may need to edit the `~/.zshrc` file or `.bashrc` [according to these instructions](https://stackoverflow.com/questions/45577194/failed-to-activate-virtualenv-with-pyenv#answer-45578839) But I find it hard to believe this is the easier way to do this.
      - Then activate this env with `pyenv activate sk8botvenv` (skip next activation step, that doesn't apply to you, go straight to `pip install -r requirements.txt`)
-    
+     - When you are done with this environment, type `source deactivate`
   
  - Activate virtual environment:
   
