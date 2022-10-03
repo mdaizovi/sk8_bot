@@ -1,7 +1,6 @@
 import json
 import random
 import requests
-from bs4 import BeautifulSoup
 from slackclient import SlackClient
 
 from django.apps import apps
@@ -92,14 +91,6 @@ class GenericMessageFactory:
             url = contents["image"]
             return url
         return None
-
-    def _get_insult(self):
-        api_url = "https://autoinsult.com/index.php?style={}".format(
-            random.randint(0, 3))
-        contents = requests.get(api_url, timeout=10)
-        soup = BeautifulSoup(contents.content, 'html.parser')
-        text = soup.find("div", {"id": "insult"}).getText()
-        return text
 
     def _get_taco(self):
         api_url = "http://taco-randomizer.herokuapp.com/random/"
