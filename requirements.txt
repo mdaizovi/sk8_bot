@@ -25,7 +25,7 @@ nodeenv==1.4.0
 packaging==20.4
 pluggy==0.13.1
 pre-commit==2.6.0
-py==1.9.0
+py==1.10.0
 pyaes==1.6.1
 pyasn1==0.4.8
 pycparser==2.20
