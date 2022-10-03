@@ -47,14 +47,16 @@ From here, `words that looks like this` are commands you are meant to type somew
  - Install backend requirements (make sure you are in your virtual environment first):
   
     `pip install -r requirements.txt`
+     - If that doesn't work, you might need to type `pip3 install -r requirements.txt`
 
 - Run initial migrations, to prepare database:
   
     `python manage.py migrate`
+     - If that doesn't work, you might need to type `python3 manage.py migrate`
 
 - Make yourself a super user:
   
-    `python manage.py createsuperuser`
+    `python manage.py createsuperuser` (or `python3 manage.py createsuperuser`) so on and so forth for all other `python` commands
 
   - You will be prompted by Django to create a super user, and you can use these credentials to log into the Admin interface (more on that later. We're going to take a pause on this subject here and come back to it.)
 
