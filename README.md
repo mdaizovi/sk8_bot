@@ -41,16 +41,6 @@ From here, `words that looks like this` are commands you are meant to type somew
     - If you have python 3.9 on your system, you can make a virtual environment like so:
        - `python -m venv venv`
        - If that doesn't work, you might need to type `python3 -m venv venv`
-    
-    If not, you will need to install pyenv so we can have more than one version of pythons working on your system.
-     - If you have a mac and homebrew, you can instal pyvenv with `brew install pyenv`
-     - Next install with `brew install pyenv-virtualenv`
-     - Then install python 3.9 with `pyenv install 3.9.0`
-     - Then create your env with `python3.9 -m venv sk8botvenv`
-     - To see your virtual environments you can do `pyenv virtualenvs` and you should see the environment you just made.
-     - If that doesn't work you may need to edit the `~/.zshrc` file or `.bashrc` [according to these instructions](https://stackoverflow.com/questions/45577194/failed-to-activate-virtualenv-with-pyenv#answer-45578839) But I find it hard to believe this is the easier way to do this.
-     - Then activate this env with `pyenv activate sk8botvenv` (skip next activation step, that doesn't apply to you, go straight to `pip install -r requirements.txt`)
-     - When you are done with this environment, type `source deactivate`
   
  - Activate virtual environment:
   
@@ -60,6 +50,8 @@ From here, `words that looks like this` are commands you are meant to type somew
   
     `pip install -r requirements.txt`
      - If that doesn't work, you might need to type `pip3 install -r requirements.txt`
+     NOTE TO THE FUTURE: if this does not work, check to ensure that `cffi` is not pinned to a specific verison, in requirements.txt
+     As of right now cffi is causing problems between versions of python 3.9 versus 3.10
 
 - Run initial migrations, to prepare database:
   
