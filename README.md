@@ -38,6 +38,7 @@ From here, `words that looks like this` are commands you are meant to type somew
  - Make a Virtual Environment:
   
     `python -m venv venv`
+     - If that doesn't work, you might need to type `python3 -m venv venv`
   
  - Activate virtual environment:
   
