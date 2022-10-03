@@ -45,6 +45,8 @@ From here, `words that looks like this` are commands you are meant to type somew
  - Activate virtual environment:
   
     `source venv/bin/activate`
+    
+  - NOTE: At this moment this may only work with python 3.9 so we may need to set a python version in venv. This is for Mic To Do and written so she won't forget. Either that or make things compatible with 3.10.
 
  - Install backend requirements (make sure you are in your virtual environment first):
   
