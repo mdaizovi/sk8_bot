@@ -38,9 +38,19 @@ From here, `words that looks like this` are commands you are meant to type somew
    You can do this by typing `cp sk8_bot/.env.example sk8_bot/.env` in the terminal.
     
  - Make a Virtual Environment:
-  
-    `python -m venv venv`
-     - If that doesn't work, you might need to type `python3 -m venv venv`
+    - If you have python 3.9 on your system, you can make a virtual environment like so:
+       - `python -m venv venv`
+       - If that doesn't work, you might need to type `python3 -m venv venv`
+    
+    If not, you will need to install pyenv so we can have more than one version of pythons working on your system.
+     - If you have a mac and homebrew, you can instal pyvenv with `brew install pyenv`
+     - Next install with `brew install pyenv-virtualenv`
+     - Then install python 3.9 with `pyenv install 3.9.0`
+     - Then create your env with `python3.9 -m venv sk8botvenv`
+     - To see your virtual environments you can do `pyenv virtualenvs` and you should see the environment you just made.
+     - If that doesn't work you may need to edit the `~/.zshrc` file or `.bashrc` [according to these instructions](https://stackoverflow.com/questions/45577194/failed-to-activate-virtualenv-with-pyenv#answer-45578839) But I find it hard to believe this is the easier way to do this.
+     - Then activate this env with `pyenv activate sk8botvenv` (skip next activation step, that doesn't apply to you, go straight to `pip install -r requirements.txt`)
+    
   
  - Activate virtual environment:
   
