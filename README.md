@@ -89,7 +89,7 @@ From here, `words that looks like this` are commands you are meant to type somew
         
         `Disable`
         
-    - Create a group chat and a channel. Add your bot to both, and make the Bot an admin of the channel. 
+    - Create a group chat and a channel. Add your bot to both, make the Bot an admin of the channel, and give it access to post messages. 
       
   - Run ngrok by opening another terminal and typing:
   
