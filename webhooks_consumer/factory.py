@@ -74,7 +74,8 @@ class GenericMessageFactory:
             "Bend your knees!",
             "Look behind you!",
             "A millimeter higher, a millisecond faster",
-            "It’s better to be looked over than overlooked"
+            "It’s better to be looked over than overlooked",
+            "Noiiice!!!"
         ]
         return random.choice(sayings)
 
