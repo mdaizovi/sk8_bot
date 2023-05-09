@@ -56,6 +56,7 @@ class GenericMessageFactory:
         return None
 
     def _get_sloth(self):
+        # doesn't work aymore
         api_url = "https://sloth.pics/api"
         contents = self._get_api_response_or_none(api_url)
         if contents:
@@ -67,7 +68,13 @@ class GenericMessageFactory:
         sayings = [
             "Jesus titty fucking Christ!",
             "Fuck me dead and bury me pregnant!",
-            "Fuck MY DAD and bury me pregnant"
+            "Fuck MY DAD and bury me pregnant",
+            "I'm not here to fuck spiders",
+            "G'day mate!",
+            "Bend your knees!",
+            "Look behind you!",
+            "A millimeter higher, a millisecond faster",
+            "It’s better to be looked over than overlooked"
         ]
         return random.choice(sayings)
 
@@ -93,6 +100,7 @@ class GenericMessageFactory:
         return None
 
     def _get_taco(self):
+        # doesn't work aymore
         api_url = "http://taco-randomizer.herokuapp.com/random/"
         contents = self._get_api_response_or_none(api_url)
         if contents:
