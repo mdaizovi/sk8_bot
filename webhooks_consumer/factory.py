@@ -75,7 +75,9 @@ class GenericMessageFactory:
             "Look behind you!",
             "A millimeter higher, a millisecond faster",
             "It’s better to be looked over than overlooked",
-            "Noiiice!!!"
+            "Noiiice!!!",
+            "aaaawww SHIT Yeah!",
+            "Fucking hell dude!"
         ]
         return random.choice(sayings)
 
