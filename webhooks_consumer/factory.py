@@ -170,7 +170,7 @@ class GenericMessageFactory:
                         if telegram_input.nickname_public:
                             platform = telegram_input.nickname_public
                         else:
-                            platform = telegram_input.platform  # Should be Telegram
+                            platform = telegram_input.get_platform_display()  # Should be Telegram
             except:
                 pass
         else:
