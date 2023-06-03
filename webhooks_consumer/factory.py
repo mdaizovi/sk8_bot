@@ -5,7 +5,7 @@ from slackclient import SlackClient
 
 from django.apps import apps
 from django.conf import settings
-
+from django.core.mail import EmailMessage, send_mail, mail_admins
 
 class GenericMessageFactory:
     def __init__(self, request_json):
@@ -212,7 +212,13 @@ class TelegramMessageFactory(GenericMessageFactory):
         else:
             data = {"chat_id": output_target,
                     "text": output_content, "parse_mode": "Markdown"}
-            requests.post(self._build_url(api_action="sendMessage"), data=data)
+            
+            reponse = requests.post(self._build_url(api_action="sendMessage"), data=data)
+            content = response.json()
+            if content["ok"] != True:
+                print(str(content))
+                message_body = "A bot post failed. go look at it."
+                mail_admins(subject="Failed Bot post", message = message_body, fail_silently=True)
 
 
 class SlackMessageFactory(GenericMessageFactory):
