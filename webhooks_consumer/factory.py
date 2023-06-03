@@ -217,7 +217,7 @@ class TelegramMessageFactory(GenericMessageFactory):
         return requests.post(self._build_url(api_action="sendPhoto"), data=data)
    
     def _send_text_output_content(self, output_target, output_content, parse_mode="Markdown"):
-        data = {"chat_id": output_target, "text": output_content, parse_mode=parse_mode}
+        data = {"chat_id": output_target, "text": output_content, "parse_mode":parse_mode}
         response = requests.post(self._build_url(api_action="sendMessage"), data=data)
         content = json.loads(response.content)
         parse_mode_abbr = parse_mode[0]
