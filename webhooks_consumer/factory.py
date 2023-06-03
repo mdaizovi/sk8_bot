@@ -172,7 +172,7 @@ class GenericMessageFactory:
                         else:
                             platform = telegram_input.get_platform_display()  # Should be Telegram
             except:
-                message_body = "A bot post failed. go look at it."
+                message_body = "A bot post failed in get_broadcast_message. go look at it."
                 mail_admins(subject="Failed Bot post", message = message_body, fail_silently=True)
         else:
             # Slack json
@@ -215,10 +215,9 @@ class TelegramMessageFactory(GenericMessageFactory):
                     "text": output_content, "parse_mode": "Markdown"}
             
             response = requests.post(self._build_url(api_action="sendMessage"), data=data)
-            content = response.json()
-            print(str(content))
-            message_body = "A bot post failed. go look at it."
-            mail_admins(subject="Failed Bot post", message = message_body, fail_silently=True)
+            print(response.content)
+#             message_body = "A bot post failed. go look at it."
+#             mail_admins(subject="Failed Bot post", message = message_body, fail_silently=True)
 
 
 
