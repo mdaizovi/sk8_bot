@@ -230,11 +230,18 @@ class TelegramMessageFactory(GenericMessageFactory):
             if content["ok"] == False:
                 cleaned_output_content = _remove_link_from_text(output_content)
                 response = self._send_text_output_content(output_target, cleaned_output_content, parse_mode = "Markdown")
+                print("Issue with the content, going to try it with no links")
                 content = json.loads(response.content)
                 if content["ok"] == False:
                     # Try origional content in HTML
+                    print("Sending as HTML")
                     response = self._send_text_output_content(output_target, output_content, parse_mode = "HTML")
-                         
+                    content = json.loads(response.content)
+                    if content["ok"] == False:
+                        print("still a problem with this message")
+                    else:
+                        print("Finally ok")
+                        
 class SlackMessageFactory(GenericMessageFactory):
 
     def __init__(self, request_json):
