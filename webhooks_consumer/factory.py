@@ -228,16 +228,16 @@ class TelegramMessageFactory(GenericMessageFactory):
         if self._output_content_is_a_photo(output_content):
             self._send_photo_output_content(output_target, output_content)
         else:
-            response = self._send_text_output_content(output_target, output_content, parse_mode = "Markdown")
+            response = self._send_text_output_content(output_target=output_target, output_content=output_content, parse_mode = "Markdown")
             if json.loads(response.content)["ok"] == False:
                 cleaned_output_content = _remove_link_from_text(output_content)
                 print("Issue with the content, going to try it with no links")
-                response = self._send_text_output_content(output_target, cleaned_output_content, parse_mode = "Markdown")
+                response = self._send_text_output_content(output_target=output_target, output_content=cleaned_output_content, parse_mode = "Markdown")
                 if json.loads(response.content)["ok"] == False:
-                    response = self._send_text_output_content(output_target, output_content, parse_mode = "HTML")
-                    if json.loads(response.content)["ok"]  == False:
+                    response = self._send_text_output_content(output_target=output_target, output_content=output_content, parse_mode = "html")
+                    if json.loads(response.content)["ok"] == False:
                         print("Still a problem with this message, last try is html with no links")
-                        response = self._send_text_output_content(output_target, cleaned_output_content, parse_mode = "HTML")
+                        response = self._send_text_output_content(output_target=output_target, output_content=cleaned_output_content, parse_mode = "html")
                         if json.loads(response.content)["ok"] == False:
                             print("Still doesn't work, just give up")
                         
