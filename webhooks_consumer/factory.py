@@ -1,6 +1,7 @@
 import json
 import random
 import requests
+import re
 from slackclient import SlackClient
 
 from django.apps import apps
@@ -172,6 +173,7 @@ class GenericMessageFactory:
                         else:
                             platform = telegram_input.get_platform_display()  # Should be Telegram
             except:
+                #Email is not working right now, gmail won't do insecure apps anymore
                 message_body = "A bot post failed in get_broadcast_message. go look at it."
                 mail_admins(subject="Failed Bot post", message = message_body, fail_silently=True)
         else:
@@ -203,24 +205,36 @@ class TelegramMessageFactory(GenericMessageFactory):
             settings.TELEGRAM_BOT_TOKEN, api_action)
         return url
 
-    def _send_output(self, output_target, output_content):
+    def _output_content_is_a_photo(self, output_content):
         has_image_extension = [True for ext in ["jpg", "jpeg", "png", "gif",
                                                 "mp4", "webm"] if output_content.lower().endswith(".{}".format(ext))]
-        # it's a photo
-        if "http" in output_content and any(has_image_extension):
-            data = {"chat_id": output_target, "photo": output_content}
-            requests.post(self._build_url(api_action="sendPhoto"), data=data)
+        if "http" in output_content and any(has_image_extension): 
+            return True
+        return False
+     
+    def _send_photo_output_content(self, output_target, output_content):
+        data = {"chat_id": output_target, "photo": output_content}
+        return requests.post(self._build_url(api_action="sendPhoto"), data=data)
+   
+    def _send_text_output_content(self, output_target, output_content, parse_mode = "Markdown"):
+        data = {"chat_id": output_target, "text": output_content, "parse_mode": parse_mode}
+        return requests.post(self._build_url(api_action="sendMessage"), data=data)
+    
+    def _send_output(self, output_target, output_content):
+        if self._output_content_is_a_photo(output_content):
+            self._send_photo_output_content(output_target, output_content)
         else:
-            data = {"chat_id": output_target,
-                    "text": output_content, "parse_mode": "Markdown"}
-            
-            response = requests.post(self._build_url(api_action="sendMessage"), data=data)
+            response = self._send_text_output_content(output_target, output_content, parse_mode = "Markdown")
             content = json.loads(response.content)
             print("content: "+str(content))
-            if content["ok"] != True:
-                message_body = "A bot post is not ok. go look at it."
-                mail_admins(subject="Failed Bot post", message = message_body, fail_silently=True)
-
+            if content["ok"] == False:
+                cleaned_output_content = _remove_link_from_text(output_content)
+                response = self._send_text_output_content(output_target, cleaned_output_content, parse_mode = "Markdown")
+                content = json.loads(response.content)
+                if content["ok"] == False:
+                    # Try origional content in HTML
+                    response = self._send_text_output_content(output_target, output_content, parse_mode = "HTML")
+                         
 class SlackMessageFactory(GenericMessageFactory):
 
     def __init__(self, request_json):
@@ -231,3 +245,9 @@ class SlackMessageFactory(GenericMessageFactory):
         response = slack_client.api_call(
             "chat.postMessage", channel=output_target, text=output_content
         )
+        
+
+def _remove_link_from_text(text):
+    return re.sub(r'^https?:\/\/.*[\r\n]*', '', text, flags=re.MULTILINE)
+
+
