@@ -216,6 +216,7 @@ class TelegramMessageFactory(GenericMessageFactory):
             
             response = requests.post(self._build_url(api_action="sendMessage"), data=data)
             content = json.loads(response.content)
+            print("content: "+str(content))
             if content["ok"] != True:
                 message_body = "A bot post is not ok. go look at it."
                 mail_admins(subject="Failed Bot post", message = message_body, fail_silently=True)
