@@ -216,31 +216,30 @@ class TelegramMessageFactory(GenericMessageFactory):
         data = {"chat_id": output_target, "photo": output_content}
         return requests.post(self._build_url(api_action="sendPhoto"), data=data)
    
-    def _send_text_output_content(self, output_target, output_content, parse_mode = "Markdown"):
-        data = {"chat_id": output_target, "text": output_content, "parse_mode": parse_mode}
-        return requests.post(self._build_url(api_action="sendMessage"), data=data)
-    
+    def _send_text_output_content(self, output_target, output_content, parse_mode="Markdown"):
+        data = {"chat_id": output_target, "text": output_content, parse_mode=parse_mode}
+        response = requests.post(self._build_url(api_action="sendMessage"), data=data)
+        content = json.loads(response.content)
+        parse_mode_abbr = parse_mode[0]
+        print("Response content ("+parse_mode_abbr+"): " +str(content))
+        return response
+
     def _send_output(self, output_target, output_content):
         if self._output_content_is_a_photo(output_content):
             self._send_photo_output_content(output_target, output_content)
         else:
             response = self._send_text_output_content(output_target, output_content, parse_mode = "Markdown")
-            content = json.loads(response.content)
-            print("content: "+str(content))
-            if content["ok"] == False:
+            if json.loads(response.content)["ok"] == False:
                 cleaned_output_content = _remove_link_from_text(output_content)
-                response = self._send_text_output_content(output_target, cleaned_output_content, parse_mode = "Markdown")
                 print("Issue with the content, going to try it with no links")
-                content = json.loads(response.content)
-                if content["ok"] == False:
-                    # Try origional content in HTML
-                    print("Sending as HTML")
+                response = self._send_text_output_content(output_target, cleaned_output_content, parse_mode = "Markdown")
+                if json.loads(response.content)["ok"] == False:
                     response = self._send_text_output_content(output_target, output_content, parse_mode = "HTML")
-                    content = json.loads(response.content)
-                    if content["ok"] == False:
-                        print("still a problem with this message")
-                    else:
-                        print("Finally ok")
+                    if json.loads(response.content)["ok"]  == False:
+                        print("Still a problem with this message, last try is html with no links")
+                        response = self._send_text_output_content(output_target, cleaned_output_content, parse_mode = "HTML")
+                        if json.loads(response.content)["ok"] == False:
+                            print("Still doesn't work, just give up")
                         
 class SlackMessageFactory(GenericMessageFactory):
 
