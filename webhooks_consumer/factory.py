@@ -215,11 +215,10 @@ class TelegramMessageFactory(GenericMessageFactory):
                     "text": output_content, "parse_mode": "Markdown"}
             
             response = requests.post(self._build_url(api_action="sendMessage"), data=data)
-            print(response.content)
-#             message_body = "A bot post failed. go look at it."
-#             mail_admins(subject="Failed Bot post", message = message_body, fail_silently=True)
-
-
+            content = json.loads(response.content)
+            if content["ok"] != True:
+                message_body = "A bot post is not ok. go look at it."
+                mail_admins(subject="Failed Bot post", message = message_body, fail_silently=True)
 
 class SlackMessageFactory(GenericMessageFactory):
 
