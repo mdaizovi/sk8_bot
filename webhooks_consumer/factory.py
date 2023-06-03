@@ -214,10 +214,11 @@ class TelegramMessageFactory(GenericMessageFactory):
             data = {"chat_id": output_target,
                     "text": output_content, "parse_mode": "Markdown"}
             
-            reponse = requests.post(self._build_url(api_action="sendMessage"), data=data)
+            response = requests.post(self._build_url(api_action="sendMessage"), data=data)
             content = response.json()
             print(str(content))
-
+            message_body = "A bot post failed. go look at it."
+            mail_admins(subject="Failed Bot post", message = message_body, fail_silently=True)
 
 
 
