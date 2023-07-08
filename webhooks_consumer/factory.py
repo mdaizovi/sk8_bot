@@ -78,7 +78,8 @@ class GenericMessageFactory:
             "It’s better to be looked over than overlooked",
             "Noiiice!!!",
             "aaaawww SHIT Yeah!",
-            "Fucking hell dude!"
+            "Fucking hell dude!",
+            "How do they make fucking cucumber taste so good?!?"
         ]
         return random.choice(sayings)
 
