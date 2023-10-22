@@ -2,7 +2,7 @@ FAQ = {}
 # questions
 indoor_q = "where can you skate indoors in berlin?"
 rain_q = "where can you skate in berlin when it's raining?"
-skateshop_q = "where can you buy skates in berlin?"
+skateshop_q = "where can you buy roller skates in berlin?"
 
 # answers
 FAQ[
