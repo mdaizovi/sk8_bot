@@ -22,8 +22,7 @@ rain_a = (
 There's also a diy with a few obstacles in Heinersdorf with roof and some diy obstacles under a bridge at Booky Bridge 
 (10 mins walk from Baumschulenweg S-Bahn stop). 
 Plus heidelberger platz skatepark (transitions) works if it's only softly raining.
-You can flat skate at the Messe Nord ICC underpass but it's usually very dirty and sometimes people live there
-so think twice about going alone.
+You can flat skate at the Messe Nord ICC underpass but it's usually very dirty and sometimes people live there, so think twice about going alone.
 """
 )
 FAQ[rain_q] = rain_a
