@@ -73,17 +73,13 @@ class TelegramBotView(View):
                         factory._send_output(output_target=output_channel_id, output_content=content)
                     
                 return JsonResponse({"ok": "Action Completed"})
-        # else:
-        #     print("checking text")
-        #     # Experimental hard-coded FAQ for telegram
-        #     content = str(FAQ.get(text))
-        #     print(f"content: {content}")
-        #     if content is not None:
-        #         factory_class = PlatformChoices.get_factory(PlatformChoices.TELEGRAM)
-        #         factory = factory_class(request_json=request_json)
-        #         print(f"factory_class {factory_class}")
-        #         print(f"chat id {chat_id}")
-        #         factory._send_output(output_target=chat_id, output_content=content)
+        else:
+            # Experimental hard-coded FAQ for telegram
+            content = FAQ.get(text)
+            if content is not None:
+                factory_class = PlatformChoices.get_factory(PlatformChoices.TELEGRAM)
+                factory = factory_class(request_json=request_json)
+                factory._send_output(output_target=chat_id, output_content=str(content))
         
 
         return JsonResponse({"ok": "no need to process"})
