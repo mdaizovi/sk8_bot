@@ -74,10 +74,13 @@ class TelegramBotView(View):
                     
                 return JsonResponse({"ok": "Action Completed"})
         else:
+            print("checking text")
             # Experimental hard-coded FAQ for telegram
             content = FAQ.get(text)
+            print(f"content: {content}")
             if content is not None:
                 factory_class = PlatformChoices.get_factory(PlatformChoices.TELEGRAM)
+                print(f"factory_class {factory_class}")
                 factory._send_output(output_target=chat_id, output_content=content)
         
 
