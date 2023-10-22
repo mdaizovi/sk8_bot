@@ -28,12 +28,11 @@ so think twice about going alone.
 )
 FAQ[rain_q] = rain_a
 
-FAQ = {
-    skateshop_q: """
+FAQ[skateshop_q] = """
 No good local shop. Sometimes you can find good deals on Kleinanzeigen.de but the selection is small and sporadic. 
 There is also a facebook group called '2nd Hand Rollschuh Börse - roller skate flea market - Deutschland & europe'. 
 Decathalon and a few skateboard shops have intro skates. 
 You can buy Wifas or Riedells from Michel, the guy behind Rollers, Inc.  
 Typically we order from suckerpunch or rollerderbyhouse.eu
 """
-}
+
