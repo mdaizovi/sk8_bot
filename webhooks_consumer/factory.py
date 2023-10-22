@@ -33,20 +33,18 @@ class GenericMessageFactory:
         return None
 
     def _get_doggo(self):
-        # oh no! doggo is down!
-        # api_url = "https://random.dog/woof.json"
-        # contents = self._get_api_response_or_none(api_url)
-        # if contents and "url" in contents:
-        #     url = contents["url"]
-        #     return url
-        # return None
-
-        # Not as cute dog api
-        api_url = "https://dog.ceo/api/breeds/image/random"
+        api_url = "https://random.dog/woof.json"
         contents = self._get_api_response_or_none(api_url)
-        if contents and "message" in contents:
-            url = contents["message"]
+        if contents and "url" in contents:
+            url = contents["url"]
             return url
+        return None
+        # Not as cute dog api
+        # api_url = "https://dog.ceo/api/breeds/image/random"
+        # contents = self._get_api_response_or_none(api_url)
+        # if contents and "message" in contents:
+        #     url = contents["message"]
+        #     return url
 
     def _get_duck(self):
         api_url = "https://random-d.uk/api/v2/random"
@@ -58,11 +56,11 @@ class GenericMessageFactory:
 
     def _get_sloth(self):
         # doesn't work aymore
-        api_url = "https://sloth.pics/api"
-        contents = self._get_api_response_or_none(api_url)
-        if contents:
-            url = contents["url"]
-            return url
+        # api_url = "https://sloth.pics/api"
+        # contents = self._get_api_response_or_none(api_url)
+        # if contents:
+        #     url = contents["url"]
+        #     return url
         return None
 
     def _get_bootie(self):
@@ -75,7 +73,7 @@ class GenericMessageFactory:
             "Bend your knees!",
             "Look behind you!",
             "A millimeter higher, a millisecond faster",
-            "It’s better to be looked over than overlooked",
+            "It's better to be looked over than overlooked",
             "Noiiice!!!",
             "aaaawww SHIT Yeah!",
             "Fucking hell dude!",
@@ -106,11 +104,11 @@ class GenericMessageFactory:
 
     def _get_taco(self):
         # doesn't work aymore
-        api_url = "http://taco-randomizer.herokuapp.com/random/"
-        contents = self._get_api_response_or_none(api_url)
-        if contents:
-            text = json.dumps(contents, indent=4, sort_keys=True)
-            return text
+        # api_url = "http://taco-randomizer.herokuapp.com/random/"
+        # contents = self._get_api_response_or_none(api_url)
+        # if contents:
+        #     text = json.dumps(contents, indent=4, sort_keys=True)
+        #     return text
         return None
 
     def _parse_telegram_message_obj(self):

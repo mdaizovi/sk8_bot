@@ -11,7 +11,7 @@ from .factory import SlackMessageFactory, TelegramMessageFactory
 from misc.utils import num_queries
 from .models import InputSource, OutputChannel, BotAction, BotOutput
 from .model_choices import FunctionChoices, PlatformChoices
-
+from .faq import FAQ
 
 class TelegramBotView(View):
     # https://api.telegram.org/bot<token>/setWebhook?url=<url>/webhooks/tutorial/
@@ -73,6 +73,13 @@ class TelegramBotView(View):
                         factory._send_output(output_target=output_channel_id, output_content=content)
                     
                 return JsonResponse({"ok": "Action Completed"})
+        else:
+            # Experimental hard-coded FAQ for telegram
+            content = FAQ.get(text)
+            if content is not None:
+                factory_class = PlatformChoices.get_factory(PlatformChoices.TELEGRAM)
+                factory._send_output(output_target=chat_id, output_content=content)
+        
 
         return JsonResponse({"ok": "no need to process"})
 
