@@ -9,8 +9,7 @@ FAQ[
     indoor_q
 ] = """
 Public indoor park skating options are the Ping Pong hall at Mellow Park and the Skatehalle. 
-Quads and inlines are allowed at the skatehalle unless it's a bsv session (this one is skateboard only), 
-also occasional WCMX sessions ("Skate Slot wechselnd" in the schedule).
+Quads and inlines are allowed at the skatehalle unless it's a bsv session (this one is skateboard only), also occasional WCMX sessions ("Skate Slot wechselnd" in the schedule).
 Skatehalle has FLINTA sessions which are skateboard, quad, inline, but you need to be FLINTA.
 Mellow Park is always changing when the Ping Pong hall is open and whether there are special session days, so it's best to call them. 
 """
